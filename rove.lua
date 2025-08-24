@@ -10,7 +10,4 @@ end
 function _draw()
     cls()
     draw_screen()
-    for card in all(cards) do
-        card:draw()
-    end
 end

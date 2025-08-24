@@ -2,13 +2,11 @@ number = 0
 card_selected = 1
 
 function init_actors()
-  cards = {}
-
+  deck = deck:new()
+  deck:init()
+  hand = {}
   for i = 1, 5 do
-    add(cards, card:new({
-      x= 18 * i,
-      value = flr(rnd(13))
-    }))
+    add(hand, deck:pop())
   end
 
 end
@@ -24,13 +22,17 @@ function update_ply1()
   end
   -- x
   if btnp(5) then
-    number += cards[card_selected].value
-    cards[card_selected].value = flr(rnd(13))
+    number += hand[card_selected].value
+    hand[card_selected] = deck:pop()
   end
 end
 
 function draw_screen()
     print("press x to add", 0, 0, WHITE)
     print(number, MIDDLE, MIDDLE, GREEN)
-    rect(cards[card_selected].x - 1, cards[card_selected].y - 1, cards[card_selected].x + 16, cards[card_selected].y + 24, WHITE)
+    rect(18 * card_selected - 1, hand[card_selected].y - 1, 18 * card_selected + 16, hand[card_selected].y + 24, WHITE)
+    for i = 1, 5 do
+      hand[i]:draw(i)
+    end
+    deck:draw()
 end
