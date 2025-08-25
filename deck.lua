@@ -1,14 +1,15 @@
 -- Deck Class
 deck={
     cardAmount = 12,
-    y = 110,
-    x = 110,
+    y = 90,
+    x = 106,
     cards = {},
-    spr = 0,
-    spr_x = 2,
-    spr_y = 3,
+    spr = 004,
+    spr_x = 3,
+    spr_y = 4,
 
 
+    -- New Deck Object
     new=function(self,tbl)
             tbl = tbl or {}
             setmetatable(tbl, {
@@ -17,11 +18,15 @@ deck={
             return tbl
     end,
 
+    -- draw cards left to screen
     draw = function(self)
-        spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
+        if self.cardAmount ~= 0 then
+            spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
+        end
         print(self.cardAmount, self.x, self.y, WHITE)
     end,
 
+    -- pop function
     pop = function(self)
         card = self.cards[self.cardAmount]
         deli(self.cards, self.cardAmount)

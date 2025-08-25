@@ -28,11 +28,12 @@ function update_ply1()
 end
 
 function draw_screen()
+    rectfill(0, 0, 127, 127, DARK_BLUE)
     print("press x to add", 0, 0, WHITE)
     print(number, MIDDLE, MIDDLE, GREEN)
-    rect(18 * card_selected - 1, hand[card_selected].y - 1, 18 * card_selected + 16, hand[card_selected].y + 24, WHITE)
     for i = 1, 5 do
       hand[i]:draw(i)
     end
+    rect(18 * card_selected - 1, hand[card_selected].y - 1, 18 * card_selected + 16, hand[card_selected].y + 24, WHITE)
     deck:draw()
 end
