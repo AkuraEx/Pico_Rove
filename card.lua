@@ -6,6 +6,12 @@ card={
     spr_x = 2,
     spr_y = 3,
     value = 0,
+    matchValue = 0,
+    modules = {
+        {0, 0, 0},
+        {0, 2, 0},
+        {1, 0, 1}
+    },
 
     new=function(self,tbl)
         tbl = tbl or {}
@@ -16,7 +22,14 @@ card={
     end,
 
     draw = function(self, index)
-        spr(self.spr, index * 18, self.y, self.spr_x, self.spr_y)
-        print(self.value, index * 18 + 1, self.y + 1, WHITE)
+        start = index * 18
+        moduleStart = start + 3
+        spr(self.spr, start, self.y, self.spr_x, self.spr_y)
+        print(self.value, start + 1, self.y + 1, WHITE)
+        for i = 0, 2 do
+            for j = 0, 2 do
+                rect(moduleStart + (4 * j), self.y + 9 + (3 * i), moduleStart + (4 * j) + 2, self.y + 10 + (3 * i), self.modules[i + 1][j + 1])
+            end
+        end
     end
 }

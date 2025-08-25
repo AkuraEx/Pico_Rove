@@ -1,6 +1,6 @@
 -- Deck Class
 deck={
-    cardAmount = 18,
+    cardAmount = 12,
     y = 110,
     x = 110,
     cards = {},
@@ -17,14 +17,6 @@ deck={
             return tbl
     end,
 
-    init = function(self)
-        for i = 1, 18 do
-            add(self.cards, card:new({
-            value = flr(rnd(13))
-            }))
-        end
-    end,
-
     draw = function(self)
         spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
         print(self.cardAmount, self.x, self.y, WHITE)
@@ -35,6 +27,139 @@ deck={
         deli(self.cards, self.cardAmount)
         self.cardAmount -= 1
         return card
-    end
+    end,
 
+    -- All 12 Movement Cards Hardcoded
+    init = function(self)
+        -- Card 1
+        add(self.cards, card:new({
+        value = 3,
+        matchValue = 5,
+        modules = {
+            {0, 0, FILLED},
+            {0, STAR, 0},
+            {FILLED, 0, 0}
+            }
+        }))
+
+        -- Card 2
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {0, FILLED, FILLED},
+            {0, GEAR, 0},
+            {0, 0, 0}
+            }
+        }))
+        
+        -- Card 3
+        add(self.cards, card:new({
+        value = 3,
+        matchValue = 5,
+        modules = {
+            {0, 0, 0},
+            {FILLED, BRAIN, FILLED},
+            {0, 0, 0}
+            }
+        }))
+
+        -- Card 4
+        add(self.cards, card:new({
+        value = 1,
+        matchValue = 3,
+        modules = {
+            {0, 0, 0},
+            {FILLED, COIL, 0},
+            {FILLED, 0, 0}
+            }
+        }))
+
+        -- Card 5
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {0, 0, 0},
+            {FILLED, SIGNAL, 0},
+            {0, FILLED, 0}
+            }
+        }))
+
+        -- Card 6
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {0, FILLED, 0},
+            {0, COIL, FILLED},
+            {0, 0, 0}
+            }
+        }))
+        -- Card 7
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {FILLED, 0, FILLED},
+            {0, CRANE, 0},
+            {0, 0, 0}
+            }
+        }))
+
+        -- Card 8
+        add(self.cards, card:new({
+        value = 1,
+        matchValue = 3,
+        modules = {
+            {0, 0, FILLED},
+            {0, COIL, FILLED},
+            {0, 0, 0}
+            }
+        }))
+
+        -- Card 9
+        add(self.cards, card:new({
+        value = 3,
+        matchValue = 5,
+        modules = {
+            {0, FILLED, 0},
+            {0, BRAIN, 0},
+            {0, FILLED, 0}
+            }
+        }))
+
+        -- Card 10
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {0, 0, 0},
+            {0, CRANE, 0},
+            {FILLED, 0, FILLED}
+            }
+        }))
+
+        -- Card 11
+        add(self.cards, card:new({
+        value = 2,
+        matchValue = 4,
+        modules = {
+            {0, 0, 0},
+            {0, GEAR, 0},
+            {FILLED, FILLED, 0}
+            }
+        }))
+
+        -- Card 12
+        add(self.cards, card:new({
+        value = 3,
+        matchValue = 5,
+        modules = {
+            {FILLED, 0, 0},
+            {0, STAR, 0},
+            {0, 0, FILLED}
+        }
+        }))
+    end
 }

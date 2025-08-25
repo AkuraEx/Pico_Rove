@@ -23,3 +23,13 @@ BLUE = 12
 LAVENDER = 13
 PINK = 14
 PEACH = 15
+
+-- Modules - Match Actual Pico Colors
+EMPTY = 0
+FILLED = 7
+BRAIN = 8
+CRANE = 9
+GEAR = 11
+SIGNAL = 12
+COIL = 1
+STAR = 2
