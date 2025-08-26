@@ -5,9 +5,15 @@ function init_actors()
   deck = deck:new()
   deck:init()
   hand = {}
+
+  -- hand init
   for i = 1, 5 do
     add(hand, deck:pop())
   end
+
+  -- board init
+  board = board:new()
+  board:init()
 
 end
 
@@ -34,6 +40,7 @@ function draw_screen()
     for i = 1, 5 do
       hand[i]:draw(i)
     end
-    rect(18 * card_selected - 1, hand[card_selected].y - 1, 18 * card_selected + 16, hand[card_selected].y + 24, WHITE)
+    rect(18 * card_selected - 1, hand[card_selected].y - 1, 18 * card_selected + 17, hand[card_selected].y + 25, GREEN)
     deck:draw()
+    board:draw()
 end

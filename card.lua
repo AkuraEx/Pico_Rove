@@ -25,11 +25,12 @@ card={
         start = index * 18
         moduleStart = start + 3
         spr(self.spr, start, self.y, self.spr_x, self.spr_y)
-        print(self.value, start + 1, self.y + 1, WHITE)
+        print(self.value, start, self.y, WHITE)
         for i = 0, 2 do
             for j = 0, 2 do
                 rect(moduleStart + (4 * j), self.y + 9 + (3 * i), moduleStart + (4 * j) + 2, self.y + 10 + (3 * i), self.modules[i + 1][j + 1])
             end
         end
+        print(self.matchValue, start + 14, self.y + 20, WHITE)
     end
 }

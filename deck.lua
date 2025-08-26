@@ -34,6 +34,10 @@ deck={
         return card
     end,
 
+    -- todo
+    -- shuffle = function(self)
+    -- end
+
     -- All 12 Movement Cards Hardcoded
     init = function(self)
         -- Card 1
