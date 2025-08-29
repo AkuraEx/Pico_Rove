@@ -1,11 +1,8 @@
 -- Defintions for various varying variables
-SCREEN_HEIGHT = 12
+SCREEN_HEIGHT = 128
 SCREEN_WIDTH = 128
 
 MIDDLE = SCREEN_HEIGHT / 2
-
-IN_PROGRESS = 0
-GAME_OVER = 1
 
 -- Pico 8 Colors
 BLACK = 0
@@ -34,3 +31,8 @@ GEAR = 11
 SIGNAL = 12
 COIL = 1
 STAR = 2
+
+-- Difficulties
+NORMAL = 5
+HARD = 4
+IMPOSSIBLE = 3

@@ -1,7 +1,7 @@
 -- Card Class
 card={
     x = 0,
-    y = 100,
+    y = 97,
     spr = 0,
     spr_x = 2.5,
     spr_y = 3.2,
@@ -22,7 +22,7 @@ card={
     end,
 
     draw = function(self, index)
-        start = index * 18
+        start = ((index - 1) * 18) + 5 
         moduleStart = start + 3
         spr(self.spr, start, self.y, self.spr_x, self.spr_y)
         print(self.value, start, self.y, WHITE)
@@ -31,6 +31,6 @@ card={
                 rect(moduleStart + (4 * j), self.y + 9 + (3 * i), moduleStart + (4 * j) + 2, self.y + 10 + (3 * i), self.modules[i + 1][j + 1])
             end
         end
-        print(self.matchValue, start + 14, self.y + 20, WHITE)
+        print(self.matchValue, start + 12, self.y + 18, WHITE)
     end
 }

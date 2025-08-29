@@ -6,10 +6,13 @@ function _init()
     -- Changing Peach to be transparent
     palt(BLACK, false)
     palt(PEACH, true)
+
+    -- Loading monogram
+    load_monogram()
 end
 
 function _update()
-    update_ply1()    
+    update_game()    
 end
 
 function _draw()

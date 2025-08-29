@@ -1,7 +1,7 @@
 -- Deck Class
 deck={
     cardAmount = 12,
-    y = 90,
+    y = 100,
     x = 106,
     cards = {},
     spr = 004,
@@ -34,9 +34,14 @@ deck={
         return card
     end,
 
-    -- todo
-    -- shuffle = function(self)
-    -- end
+    -- shuffle function
+    shuffle = function(self)
+        for i = self.cardAmount, 2, -1 do
+            j = flr(rnd(i)) + 1
+            self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+        end
+    end,
+
 
     -- All 12 Movement Cards Hardcoded
     init = function(self)
