@@ -14,6 +14,10 @@ mission = 1
 move = 0
 info = "pLAY cARD"
 
+-- Mission system variables
+mission_deck = nil
+current_mission = nil
+
 function init_actors()
   deck = deck:new()
   deck:init()
@@ -37,6 +41,12 @@ function init_actors()
       breadcrumbs[i][j] = 0
     end
   end
+
+  -- Mission deck initialization
+  mission_deck = deck:new()
+  mission_deck:init_missions()
+  mission_deck:shuffle()
+  current_mission = mission_deck:pop()
 
 end
 
@@ -67,6 +77,12 @@ function draw_screen()
 
     deck:draw()
     board:draw()
+    
+    -- Draw current mission
+    if current_mission then
+        current_mission:draw()
+    end
+    
     high_light()
 end
 
@@ -163,5 +179,65 @@ function check_pattern_match(card, board_state)
   end
   
   -- No pattern matches found
+  return false
+end
+
+-- Check if current mission is completed
+-- Mission logic: 6 filled positions + 1 specific module in the 3x4 pattern
+function check_mission_complete()
+  local mission_modules = current_mission.modules
+  
+  -- Count filled positions and check for required specific module
+  local filled_count = 0
+  local required_module_found = false
+  local required_module = nil
+  
+  -- First pass: identify the required specific module (non-EMPTY, non-FILLED)
+  for i = 1, 4 do
+    for j = 1, 3 do
+      if mission_modules[i][j] ~= EMPTY and mission_modules[i][j] ~= FILLED then
+        required_module = mission_modules[i][j]
+        break
+      end
+    end
+    if required_module then break end
+  end
+  
+  -- Second pass: check if pattern exists anywhere on board
+  for start_row = 1, 1 do  -- 4x5 board can fit 3x4 pattern starting at row 1 only
+    for start_col = 1, 3 do  -- Can start at columns 1, 2, or 3
+      filled_count = 0
+      required_module_found = false
+      
+      -- Check each position in the 3x4 pattern
+      for pattern_row = 1, 4 do
+        for pattern_col = 1, 3 do
+          local board_row = start_row + pattern_row - 1
+          local board_col = start_col + pattern_col - 1
+          local mission_value = mission_modules[pattern_row][pattern_col]
+          local board_value = board.boardState[board_row][board_col].type
+          
+          if mission_value == FILLED then
+            -- Count filled positions
+            if board_value ~= EMPTY then
+              filled_count += 1
+            end
+          elseif mission_value ~= EMPTY then
+            -- Check for specific required module
+            if board_value == mission_value then
+              required_module_found = true
+              filled_count += 1
+            end
+          end
+        end
+      end
+      
+      -- Check if this position satisfies mission requirements
+      if filled_count >= 6 and (required_module == nil or required_module_found) then
+        return true
+      end
+    end
+  end
+  
   return false
 end

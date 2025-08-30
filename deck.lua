@@ -49,6 +49,7 @@ deck={
         add(self.cards, card:new({
         value = 3,
         matchValue = 5,
+        cardType = "movement",
         modules = {
             {0, 0, FILLED},
             {0, STAR, 0},
@@ -60,6 +61,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {0, FILLED, FILLED},
             {0, GEAR, 0},
@@ -71,6 +73,7 @@ deck={
         add(self.cards, card:new({
         value = 3,
         matchValue = 5,
+        cardType = "movement",
         modules = {
             {0, 0, 0},
             {FILLED, BRAIN, FILLED},
@@ -82,6 +85,7 @@ deck={
         add(self.cards, card:new({
         value = 1,
         matchValue = 3,
+        cardType = "movement",
         modules = {
             {0, 0, 0},
             {FILLED, COIL, 0},
@@ -93,6 +97,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {0, 0, 0},
             {FILLED, SIGNAL, 0},
@@ -104,6 +109,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {0, FILLED, 0},
             {0, COIL, FILLED},
@@ -114,6 +120,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {FILLED, 0, FILLED},
             {0, CRANE, 0},
@@ -125,6 +132,7 @@ deck={
         add(self.cards, card:new({
         value = 1,
         matchValue = 3,
+        cardType = "movement",
         modules = {
             {0, 0, FILLED},
             {0, COIL, FILLED},
@@ -136,6 +144,7 @@ deck={
         add(self.cards, card:new({
         value = 3,
         matchValue = 5,
+        cardType = "movement",
         modules = {
             {0, FILLED, 0},
             {0, BRAIN, 0},
@@ -147,6 +156,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {0, 0, 0},
             {0, CRANE, 0},
@@ -158,6 +168,7 @@ deck={
         add(self.cards, card:new({
         value = 2,
         matchValue = 4,
+        cardType = "movement",
         modules = {
             {0, 0, 0},
             {0, GEAR, 0},
@@ -169,11 +180,44 @@ deck={
         add(self.cards, card:new({
         value = 3,
         matchValue = 5,
+        cardType = "movement",
         modules = {
             {FILLED, 0, 0},
             {0, STAR, 0},
             {0, 0, FILLED}
         }
         }))
+    end,
+
+    -- Initialize Mission Cards
+    init_missions = function(self)
+        -- Reset for mission cards
+        self.cards = {}
+        self.cardAmount = 0
+        
+        -- Bridge Mission
+        add(self.cards, missioncard:new({
+            missionName = "bRIDGE",
+            modules = {
+                {0, 0, FILLED},
+                {0, FILLED, FILLED},
+                {FILLED, CRANE, 0},
+                {FILLED, 0, 0}
+            }
+        }))
+        
+        -- Jump Mission  
+        add(self.cards, missioncard:new({
+            missionName = "jUMP",
+            modules = {
+                {FILLED, COIL, FILLED},
+                {0, FILLED, 0},
+                {0, FILLED, 0},
+                {0, FILLED, 0}
+            }
+        }))
+        
+        -- Set correct card count
+        self.cardAmount = #self.cards
     end
 }
