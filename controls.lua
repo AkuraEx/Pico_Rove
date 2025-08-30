@@ -15,45 +15,110 @@ function play_card()
     card_phase = false
     board_phase = true
     info = "mOVE tILES"
+    
+    -- Clear breadcrumbs for new turn
+    for i = 1, 4 do
+      for j = 1, 5 do
+        breadcrumbs[i][j] = 0
+      end
+    end
   end
 end
 
 function play_board()
-    -- left
-    if btnp(0) and board_col_highlight > 1 then
-        board_col_highlight -= 1
-    end
-    -- right
-    if btnp(1) and board_col_highlight < 5 then
-        board_col_highlight += 1
-    end
-    -- up
-    if btnp(2) and board_row_highlight > 1 then
-        board_row_highlight -= 1
-    end
-    -- down
-    if btnp(3) and board_row_highlight < 4 then
-        board_row_highlight += 1
-    end
-    -- Press x without module selected
-    if btnp(5) and board_row_selected == 0 then
-        info = "mOVE tILE OR aCTIVATE"
-        board_col_selected = board_col_highlight
-        board_row_selected = board_row_highlight
-    -- Press x with module selected
-    elseif btnp(5) and board_row_selected ~= 0 then
-        -- Very Long Swap Statement
-        board.boardState[board_row_selected][board_col_selected].type, board.boardState[board_row_highlight][board_col_highlight].type = board.boardState[board_row_highlight][board_col_highlight].type, board.boardState[board_row_selected][board_col_selected].type
-        board.boardState[board_row_selected][board_col_selected].spr, board.boardState[board_row_highlight][board_col_highlight].spr = board.boardState[board_row_highlight][board_col_highlight].spr, board.boardState[board_row_selected][board_col_selected].spr
-        board.boardState[board_row_selected][board_col_selected].used, board.boardState[board_row_highlight][board_col_highlight].used = board.boardState[board_row_highlight][board_col_highlight].used, board.boardState[board_row_selected][board_col_selected].used
-        board_row_selected = 0
-        board_col_selected = 0
-        move -= 1
-
-        if(move == 0) then
-            card_phase = true
-            board_pahase = false
-            info = "pLAY cARD"
+    -- No module selected - cursor movement mode
+    if moving_module_row == 0 then
+        -- left
+        if btnp(0) and board_col_highlight > 1 then
+            board_col_highlight -= 1
+        end
+        -- right
+        if btnp(1) and board_col_highlight < 5 then
+            board_col_highlight += 1
+        end
+        -- up
+        if btnp(2) and board_row_highlight > 1 then
+            board_row_highlight -= 1
+        end
+        -- down
+        if btnp(3) and board_row_highlight < 4 then
+            board_row_highlight += 1
+        end
+        -- Press x to select module at cursor position
+        if btnp(5) and board.boardState[board_row_highlight][board_col_highlight].type ~= EMPTY then
+            moving_module_row = board_row_highlight
+            moving_module_col = board_col_highlight
+            movement_step = 1
+            info = "mOVE sPRITE"
+        end
+    
+    -- Module selected - direct movement mode
+    else
+        local new_row = moving_module_row
+        local new_col = moving_module_col
+        local can_move = false
+        
+        -- left
+        if btnp(0) and moving_module_col > 1 then
+            new_col = moving_module_col - 1
+            can_move = true
+        end
+        -- right
+        if btnp(1) and moving_module_col < 5 then
+            new_col = moving_module_col + 1
+            can_move = true
+        end
+        -- up
+        if btnp(2) and moving_module_row > 1 then
+            new_row = moving_module_row - 1
+            can_move = true
+        end
+        -- down
+        if btnp(3) and moving_module_row < 4 then
+            new_row = moving_module_row + 1
+            can_move = true
+        end
+        
+        -- Execute movement if valid
+        if can_move and move > 0 then
+            -- Leave breadcrumb at current position
+            breadcrumbs[moving_module_row][moving_module_col] = movement_step
+            movement_step += 1
+            
+            -- Move the module
+            board.boardState[new_row][new_col].type = board.boardState[moving_module_row][moving_module_col].type
+            board.boardState[new_row][new_col].spr = board.boardState[moving_module_row][moving_module_col].spr
+            board.boardState[new_row][new_col].used = board.boardState[moving_module_row][moving_module_col].used
+            
+            -- Clear old position
+            board.boardState[moving_module_row][moving_module_col].type = EMPTY
+            board.boardState[moving_module_row][moving_module_col].spr = 0
+            board.boardState[moving_module_row][moving_module_col].used = 0
+            
+            -- Update position
+            moving_module_row = new_row
+            moving_module_col = new_col
+            
+            -- Deduct movement point
+            move -= 1
+            
+            -- Check if movement finished
+            if move == 0 then
+                moving_module_row = 0
+                moving_module_col = 0
+                movement_step = 0
+                card_phase = true
+                board_phase = false
+                info = "pLAY cARD"
+            end
+        end
+        
+        -- Press x to finish movement early
+        if btnp(5) then
+            moving_module_row = 0
+            moving_module_col = 0
+            movement_step = 0
+            info = "mOVE tILES"
         end
     end
 end

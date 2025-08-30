@@ -5,6 +5,11 @@ board_row_highlight = 1
 board_col_highlight = 1
 board_row_selected = 0
 board_col_selected = 0
+-- New variables for direct sprite movement
+moving_module_row = 0
+moving_module_col = 0
+breadcrumbs = {}
+movement_step = 0
 mission = 1
 move = 0
 info = "pLAY cARD"
@@ -23,6 +28,15 @@ function init_actors()
   -- board init
   board = board:new()
   board:init()
+
+  -- initialize breadcrumbs table
+  breadcrumbs = {}
+  for i = 1, 4 do
+    breadcrumbs[i] = {}
+    for j = 1, 5 do
+      breadcrumbs[i][j] = 0
+    end
+  end
 
 end
 
@@ -69,17 +83,28 @@ function high_light()
       start = ((card_highlight - 1) * 18) + 4 
       rect(start, hand[card_highlight].y - 1, start + 18, hand[card_highlight].y + 25, GREEN)
     elseif board_phase then
-      x = 12 + (21 * (board_col_highlight - 1))
-      y = 30 + (16 * (board_row_highlight - 1))
-
-      rect(x, y, x + 19, y + 15, GREEN)
-
-      if(board_col_selected ~= 0) then
-        x = 12 + (21 * (board_col_selected - 1))
-        y = 30 + (16 * (board_row_selected - 1))
-
-        rect(x, y, x + 19, y + 15, WHITE)
+      -- Draw breadcrumbs first
+      for i = 1, 4 do
+        for j = 1, 5 do
+          if breadcrumbs[i][j] > 0 then
+            local x = 12 + (21 * (j - 1)) + 8
+            local y = 30 + (16 * (i - 1)) + 6
+            print(breadcrumbs[i][j], x, y, YELLOW)
+          end
+        end
       end
-
+      
+      -- Highlight cursor or moving module
+      if moving_module_row > 0 then
+        -- Highlight the moving module with a different color
+        x = 12 + (21 * (moving_module_col - 1))
+        y = 30 + (16 * (moving_module_row - 1))
+        rect(x, y, x + 19, y + 15, RED)
+      else
+        -- Normal cursor highlighting
+        x = 12 + (21 * (board_col_highlight - 1))
+        y = 30 + (16 * (board_row_highlight - 1))
+        rect(x, y, x + 19, y + 15, GREEN)
+      end
     end
 end
