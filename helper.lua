@@ -108,3 +108,60 @@ function high_light()
       end
     end
 end
+
+-- Check if a card's pattern matches any 3x3 region on the board
+-- TODO: Reuse with passed flag to also check mission success after card placement
+-- TODO: Adjust to allow for flexible grid, that'll be a doozy
+
+function check_pattern_match(card, board_state)
+  -- The 4x5 board has 6 possible 3x3 regions to check
+  -- Top row: (1,1), (1,2), (1,3)
+  -- Bottom row: (2,1), (2,2), (2,3)
+  for start_row = 1, 2 do
+    for start_col = 1, 3 do
+      local pattern_matches = true
+      
+      -- Check each position in the 3x3 pattern
+      for pattern_row = 1, 3 do
+        for pattern_col = 1, 3 do
+          local board_row = start_row + pattern_row - 1
+          local board_col = start_col + pattern_col - 1
+          local card_value = card.modules[pattern_row][pattern_col]
+          local board_value = board_state[board_row][board_col].type
+          
+          -- Pattern matching rules:
+          -- 0 (EMPTY) in card pattern matches anything
+          -- FILLED in card pattern matches any non-empty tile
+          -- Specific types must match exactly
+          if card_value == EMPTY then
+            -- EMPTY matches anything, continue
+          elseif card_value == FILLED then
+            -- FILLED matches any non-empty tile
+            if board_value == EMPTY then
+              pattern_matches = false
+              break
+            end
+          else
+            -- Specific type must match exactly
+            if card_value ~= board_value then
+              pattern_matches = false
+              break
+            end
+          end
+        end
+        
+        if not pattern_matches then
+          break
+        end
+      end
+      
+      -- If we found a match in this 3x3 region, return true
+      if pattern_matches then
+        return true
+      end
+    end
+  end
+  
+  -- No pattern matches found
+  return false
+end

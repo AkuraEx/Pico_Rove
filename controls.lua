@@ -9,7 +9,14 @@ function play_card()
   end
   -- x
   if btnp(5) then
-    move += hand[card_highlight].value
+    -- Check if card pattern matches board and use appropriate value
+    local selected_card = hand[card_highlight]
+    if check_pattern_match(selected_card, board.boardState) then
+      move += selected_card.matchValue
+    else
+      move += selected_card.value
+    end
+    
     deli(hand, card_highlight)
     card_highlight = 1
     card_phase = false
