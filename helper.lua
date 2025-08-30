@@ -14,6 +14,12 @@ mission = 1
 move = 0
 info = "pLAY cARD"
 
+-- Double-selection variables for finishing movement early
+last_select_row = 0
+last_select_col = 0
+last_select_time = 0
+double_click_threshold = 0.5  -- Time window in seconds for double-selection
+
 -- Mission system variables
 mission_deck = nil
 current_mission = nil

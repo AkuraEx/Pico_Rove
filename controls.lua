@@ -53,6 +53,12 @@ function play_board()
         end
         -- Press x to select module at cursor position
         if btnp(5) and board.boardState[board_row_highlight][board_col_highlight].type ~= EMPTY then
+            -- Update tracking variables for double-selection detection
+            last_select_row = board_row_highlight
+            last_select_col = board_col_highlight
+            last_select_time = time()
+            
+            -- Select the module
             moving_module_row = board_row_highlight
             moving_module_col = board_col_highlight
             movement_step = 1
@@ -120,12 +126,32 @@ function play_board()
             end
         end
         
-        -- Press x to finish movement early
+        -- Press x to finish movement early, or double-select same square to finish
         if btnp(5) then
-            moving_module_row = 0
-            moving_module_col = 0
-            movement_step = 0
-            info = "mOVE tILES"
+            -- Check for double-selection of current position
+            local current_time = time()
+            if last_select_row == moving_module_row and 
+               last_select_col == moving_module_col and 
+               current_time - last_select_time <= double_click_threshold then
+                -- Double-selection detected - finish movement and turn
+                moving_module_row = 0
+                moving_module_col = 0
+                movement_step = 0
+                card_phase = true
+                board_phase = false
+                info = "pLAY cARD"
+            else
+                -- Single press - update tracking variables before clearing movement
+                last_select_row = moving_module_row
+                last_select_col = moving_module_col
+                last_select_time = current_time
+                
+                -- Just finish movement but stay in board phase
+                moving_module_row = 0
+                moving_module_col = 0
+                movement_step = 0
+                info = "mOVE tILES"
+            end
         end
     end
 end
