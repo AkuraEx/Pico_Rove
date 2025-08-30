@@ -194,6 +194,17 @@ deck={
         -- Reset for mission cards
         self.cards = {}
         self.cardAmount = 0
+
+        -- Boost Mission
+        add(self.cards, missioncard:new({
+            missionName = "bRIDGE",
+            modules = {
+                {0, 0, 0},
+                {FILLED, FILLED, 0},
+                {0, FILLED, STAR},
+                {FILLED, FILLED, 0}
+            }
+        }))
         
         -- Bridge Mission
         add(self.cards, missioncard:new({
@@ -205,6 +216,17 @@ deck={
                 {FILLED, 0, 0}
             }
         }))
+
+        -- Drill Mission  
+        add(self.cards, missioncard:new({
+            missionName = "dRILL",
+            modules = {
+                {0, 0, 0},
+                {FILLED, FILLED, FILLED},
+                {FILLED, 0, FILLED},
+                {0, GEAR, 0}
+            }
+        }))
         
         -- Jump Mission  
         add(self.cards, missioncard:new({
@@ -214,6 +236,50 @@ deck={
                 {0, FILLED, 0},
                 {0, FILLED, 0},
                 {0, FILLED, 0}
+            }
+        }))
+
+        -- Learn Mission  
+        add(self.cards, missioncard:new({
+            missionName = "lEARN",
+            modules = {
+                {0, 0, 0},
+                {0, 0, FILLED},
+                {0, FILLED, FILLED},
+                {BRAIN, FILLED, FILLED}
+            }
+        }))
+
+        -- Navigate Mission  
+        add(self.cards, missioncard:new({
+            missionName = "nAVIGATE",
+            modules = {
+                {FILLED, 0, 0},
+                {0, SIGNAL, 0},
+                {FILLED, 0, FILLED},
+                {FILLED, 0, FILLED}
+            }
+        }))
+
+        -- Roll Mission
+        add(self.cards, missioncard:new({
+            missionName = "bRIDGE",
+            modules = {
+                {0, FILLED, 0},
+                {FILLED, 0, FILLED},
+                {0, BRAIN, 0},
+                {FILLED, 0, FILLED}
+            }
+        }))
+
+        -- Scan Mission
+        add(self.cards, missioncard:new({
+            missionName = "bRIDGE",
+            modules = {
+                {0, FILLED, FILLED},
+                {FILLED, 0, 0},
+                {SIGNAL, 0, 0},
+                {0, FILLED, FILLED}
             }
         }))
         
