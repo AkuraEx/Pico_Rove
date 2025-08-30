@@ -8,6 +8,10 @@ board_col_selected = 0
 -- New variables for direct sprite movement
 moving_module_row = 0
 moving_module_col = 0
+-- Moving module data (stored separately during movement)
+moving_module_type = 0
+moving_module_spr = 0
+moving_module_used = 0
 breadcrumbs = {}
 movement_step = 0
 mission = 1
@@ -118,9 +122,16 @@ function high_light()
       
       -- Highlight cursor or moving module
       if moving_module_row > 0 then
+        -- Draw the moving module at its current position
+        local x = 12 + (21 * (moving_module_col - 1))
+        local y = 30 + (16 * (moving_module_row - 1))
+        
+        -- Draw the moving module sprite
+        if moving_module_type ~= 0 then
+            spr(moving_module_spr, x, y, 2.5, 2)
+        end
+        
         -- Highlight the moving module with a different color
-        x = 12 + (21 * (moving_module_col - 1))
-        y = 30 + (16 * (moving_module_row - 1))
         rect(x, y, x + 19, y + 15, RED)
       else
         -- Normal cursor highlighting
