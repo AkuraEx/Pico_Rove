@@ -32,5 +32,21 @@ card={
             end
         end
         print(self.matchValue, start + 12, self.y + 18, WHITE)
+    end,
+
+    match = function(self, r, c)
+
+        -- match check
+        for i = 1, 3 do
+            for j = 1, 3 do
+                if(self.modules[i][j] == FILLED and board.boardState[i + r][j + c].type == 0) then
+                    return false
+                elseif(self.modules[i][j] ~= FILLED and self.modules[i][j] > EMPTY and board.boardState[i + r][j + c].type ~= self.modules[i][j]) then
+                    return false
+                end
+            end
+        end
+
+        return true
     end
 }

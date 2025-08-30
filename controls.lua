@@ -1,17 +1,21 @@
 function play_card()
   -- left
-  if btnp(0) and card_highlight > 1 then
-    card_highlight -= 1
+  if btnp(0) and c_h > 1 then
+    c_h -= 1
   end
   -- right
-  if btnp(1) and card_highlight < #hand then
-    card_highlight += 1
+  if btnp(1) and c_h < #hand then
+    c_h += 1
   end
   -- x
   if btnp(5) then
-    move += hand[card_highlight].value
-    deli(hand, card_highlight)
-    card_highlight = 1
+    if hand[c_h]:match(0, 0) or hand[c_h]:match(1, 0) or hand[c_h]:match(0, 1) or hand[c_h]:match(1, 1) or hand[c_h]:match(0, 2) or hand[c_h]:match(1, 2) then
+        move += hand[c_h].matchValue
+    else 
+        move += hand[c_h].value
+    end
+    deli(hand, c_h)
+    c_h = 1
     card_phase = false
     board_phase = true
     info = "mOVE tILES"
@@ -20,49 +24,56 @@ end
 
 function play_board()
     -- left
-    if btnp(0) and board_col_highlight > 1 then
-        board_col_highlight -= 1
+    if btnp(0) and b_col_h > 1 then
+        b_col_h -= 1
     end
     -- right
-    if btnp(1) and board_col_highlight < 5 then
-        board_col_highlight += 1
+    if btnp(1) and b_col_h < 5 then
+        b_col_h += 1
     end
     -- up
-    if btnp(2) and board_row_highlight > 1 then
-        board_row_highlight -= 1
+    if btnp(2) and b_row_h > 1 then
+        b_row_h -= 1
     end
     -- down
-    if btnp(3) and board_row_highlight < 4 then
-        board_row_highlight += 1
+    if btnp(3) and b_row_h < 4 then
+        b_row_h += 1
     end
     -- Press x without module selected
-    if btnp(5) and board_row_selected == 0 then
+    if btnp(5) and b_row_s == 0 and board.boardState[b_row_h][b_col_h].type ~= 0 then
         info = "mOVE tILE OR aCTIVATE"
-        board_col_selected = board_col_highlight
-        board_row_selected = board_row_highlight
+        b_col_s = b_col_h
+        b_row_s = b_row_h
     -- Press x with module selected
-    elseif btnp(5) and board_row_selected ~= 0 then
+    elseif btnp(5) and b_row_s ~= 0 then
         -- Very Long Swap Statement
-        board.boardState[board_row_selected][board_col_selected].type, board.boardState[board_row_highlight][board_col_highlight].type = board.boardState[board_row_highlight][board_col_highlight].type, board.boardState[board_row_selected][board_col_selected].type
-        board.boardState[board_row_selected][board_col_selected].spr, board.boardState[board_row_highlight][board_col_highlight].spr = board.boardState[board_row_highlight][board_col_highlight].spr, board.boardState[board_row_selected][board_col_selected].spr
-        board.boardState[board_row_selected][board_col_selected].used, board.boardState[board_row_highlight][board_col_highlight].used = board.boardState[board_row_highlight][board_col_highlight].used, board.boardState[board_row_selected][board_col_selected].used
-        board_row_selected = 0
-        board_col_selected = 0
+        board.boardState[b_row_s][b_col_s].type, board.boardState[b_row_h][b_col_h].type = board.boardState[b_row_h][b_col_h].type, board.boardState[b_row_s][b_col_s].type
+        board.boardState[b_row_s][b_col_s].spr, board.boardState[b_row_h][b_col_h].spr = board.boardState[b_row_h][b_col_h].spr, board.boardState[b_row_s][b_col_s].spr
+        board.boardState[b_row_s][b_col_s].used, board.boardState[b_row_h][b_col_h].used = board.boardState[b_row_h][b_col_h].used, board.boardState[b_row_s][b_col_s].used
+        b_row_s = 0
+        b_col_s = 0
         move -= 1
 
         if(move == 0) then
             card_phase = true
-            board_pahase = false
+            board_phase = false
             info = "pLAY cARD"
         end
+    end
+
+    -- back out of tile
+    if btnp(4) and b_row_s ~= 0 then
+        b_row_s = 0
+        b_col_s = 0
+        info = "mOVE tILES"
     end
 end
 
 
 --
 --   if(deck.cardAmount > 0) then
---      hand[card_highlight] = deck:pop()
+--      hand[c_h] = deck:pop()
 --    else
---      deli(hand, card_highlight)
---      card_highlight = 1
+--      deli(hand, c_h)
+--      c_h = 1
 --    end

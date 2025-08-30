@@ -18,8 +18,8 @@ boardtile={
 
     draw = function(self)
         if self.type ~= 0 then
-            spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
-        else rect(self.x, self.y, self.x + 19, self.y + 15, self.type) 
+            spr(self.spr, self.x, self.y - 1, self.spr_x, self.spr_y)
+        else rect(self.x, self.y, self.x + 19, self.y + 14, self.type) 
         end
     end
 }

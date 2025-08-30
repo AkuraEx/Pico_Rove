@@ -1,10 +1,10 @@
 card_phase = true
 board_phase = false
-card_highlight = 1
-board_row_highlight = 1
-board_col_highlight = 1
-board_row_selected = 0
-board_col_selected = 0
+c_h = 1
+b_row_h = 1
+b_col_h = 1
+b_row_s = 0
+b_col_s = 0
 mission = 1
 move = 0
 info = "pLAY cARD"
@@ -35,7 +35,7 @@ function update_game()
 end
 
 function draw_screen()
-    rectfill(0, 0, 127, 127, DARK_BLUE)
+    rectfill(0, 0, 127, 127, DARK_GREY)
 
     -- Game Info
     print(info, 0, 0, WHITE)
@@ -66,19 +66,19 @@ end
 
 function high_light()
     if card_phase then 
-      start = ((card_highlight - 1) * 18) + 4 
-      rect(start, hand[card_highlight].y - 1, start + 18, hand[card_highlight].y + 25, GREEN)
+      start = ((c_h - 1) * 18) + 4 
+      rect(start, hand[c_h].y - 1, start + 18, hand[c_h].y + 25, GREEN)
     elseif board_phase then
-      x = 12 + (21 * (board_col_highlight - 1))
-      y = 30 + (16 * (board_row_highlight - 1))
+      x = 12 + (19 * (b_col_h - 1))
+      y = 30 + (14 * (b_row_h - 1))
 
-      rect(x, y, x + 19, y + 15, GREEN)
+      rect(x, y, x + 19, y + 14, GREEN)
 
-      if(board_col_selected ~= 0) then
-        x = 12 + (21 * (board_col_selected - 1))
-        y = 30 + (16 * (board_row_selected - 1))
+      if(b_col_s ~= 0) then
+        x = 12 + (19 * (b_col_s - 1))
+        y = 30 + (14 * (b_row_s - 1))
 
-        rect(x, y, x + 19, y + 15, WHITE)
+        rect(x, y, x + 19, y + 14, WHITE)
       end
 
     end

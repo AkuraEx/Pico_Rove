@@ -17,8 +17,8 @@ board={
             self.boardState[i] = {}
             for j = 1, 5 do
             self.boardState[i][j] = boardtile:new({
-                x = 12 + (21 * (j - 1)),
-                y = 30 + (16 * (i - 1)),
+                x = 12 + (19 * (j - 1)),
+                y = 30 + (14 * (i - 1)),
             })
             end
         end
