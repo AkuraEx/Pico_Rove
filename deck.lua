@@ -197,7 +197,7 @@ deck={
 
         -- Boost Mission
         add(self.cards, missioncard:new({
-            missionName = "bRIDGE",
+            missionName = "bOOST",
             modules = {
                 {0, 0, 0},
                 {FILLED, FILLED, 0},
@@ -263,7 +263,7 @@ deck={
 
         -- Roll Mission
         add(self.cards, missioncard:new({
-            missionName = "bRIDGE",
+            missionName = "rOLL",
             modules = {
                 {0, FILLED, 0},
                 {FILLED, 0, FILLED},
@@ -274,7 +274,7 @@ deck={
 
         -- Scan Mission
         add(self.cards, missioncard:new({
-            missionName = "bRIDGE",
+            missionName = "sCAN",
             modules = {
                 {0, FILLED, FILLED},
                 {FILLED, 0, 0},
