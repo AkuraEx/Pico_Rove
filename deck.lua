@@ -1,9 +1,11 @@
 -- Deck Class
 deck={
     cardAmount = 12,
+    missionCardAmount = 8,
     y = 100,
     x = 106,
     cards = {},
+    missionCards = {},
     spr = 004,
     spr_x = 3,
     spr_y = 4,
@@ -34,11 +36,27 @@ deck={
         return card
     end,
 
+    -- pop mission
+    pop_mission = function(self)
+        mission = self.missionCards[self.missionCardAmount]
+        deli(self.missionCards, self.missionCardAmount)
+        self.missionCardAmount -= 1
+        return mission
+    end,
+
     -- shuffle function
     shuffle = function(self)
         for i = self.cardAmount, 2, -1 do
             j = flr(rnd(i)) + 1
             self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+        end
+    end,
+
+    -- shuffle missions function
+    shuffle_missions = function(self)
+        for i = self.missionCardAmount, 2, -1 do
+            j = flr(rnd(i)) + 1
+            self.missionCards[i], self.missionCards[j] = self.missionCards[j], self.missionCards[i]
         end
     end,
 
@@ -51,7 +69,7 @@ deck={
         matchValue = 5,
         modules = {
             {0, 0, FILLED},
-            {0, STAR, 0},
+            {0, LASER, 0},
             {FILLED, 0, 0}
             }
         }))
@@ -62,7 +80,7 @@ deck={
         matchValue = 4,
         modules = {
             {0, FILLED, FILLED},
-            {0, GEAR, 0},
+            {0, MOTOR, 0},
             {0, 0, 0}
             }
         }))
@@ -95,7 +113,7 @@ deck={
         matchValue = 4,
         modules = {
             {0, 0, 0},
-            {FILLED, SIGNAL, 0},
+            {FILLED, SENSOR, 0},
             {0, FILLED, 0}
             }
         }))
@@ -116,7 +134,7 @@ deck={
         matchValue = 4,
         modules = {
             {FILLED, 0, FILLED},
-            {0, CRANE, 0},
+            {0, GRIPPER, 0},
             {0, 0, 0}
             }
         }))
@@ -149,7 +167,7 @@ deck={
         matchValue = 4,
         modules = {
             {0, 0, 0},
-            {0, CRANE, 0},
+            {0, GRIPPER, 0},
             {FILLED, 0, FILLED}
             }
         }))
@@ -160,7 +178,7 @@ deck={
         matchValue = 4,
         modules = {
             {0, 0, 0},
-            {0, GEAR, 0},
+            {0, MOTOR, 0},
             {FILLED, FILLED, 0}
             }
         }))
@@ -171,9 +189,102 @@ deck={
         matchValue = 5,
         modules = {
             {FILLED, 0, 0},
-            {0, STAR, 0},
+            {0, LASER, 0},
             {0, 0, FILLED}
         }
         }))
+    end,
+
+    -- Initialize Mission Cards
+    init_missions = function(self)
+
+        -- Boost Mission : 1
+        add(self.missionCards, missioncard:new({
+            missionName = "bOOST",
+            modules = {
+                {0, 0, 0},
+                {FILLED, FILLED, 0},
+                {0, FILLED, LASER},
+                {FILLED, FILLED, 0}
+            }
+        }))
+        
+        -- Bridge Mission : 2
+        add(self.missionCards, missioncard:new({
+            missionName = "bRIDGE",
+            modules = {
+                {0, 0, FILLED},
+                {0, FILLED, FILLED},
+                {FILLED, GRIPPER, 0},
+                {FILLED, 0, 0}
+            }
+        }))
+
+        -- Drill Mission  : 3
+        add(self.missionCards, missioncard:new({
+            missionName = "dRILL",
+            modules = {
+                {0, 0, 0},
+                {FILLED, FILLED, FILLED},
+                {FILLED, 0, FILLED},
+                {0, MOTOR, 0}
+            }
+        }))
+        
+        -- Jump Mission  : 4
+        add(self.missionCards, missioncard:new({
+            missionName = "jUMP",
+            modules = {
+                {FILLED, COIL, FILLED},
+                {0, FILLED, 0},
+                {0, FILLED, 0},
+                {0, FILLED, 0}
+            }
+        }))
+
+        -- Learn Mission  : 5
+        add(self.missionCards, missioncard:new({
+            missionName = "lEARN",
+            modules = {
+                {0, 0, 0},
+                {0, 0, FILLED},
+                {0, FILLED, FILLED},
+                {BRAIN, FILLED, FILLED}
+            }
+        }))
+
+        -- Navigate Mission  : 6
+        add(self.missionCards, missioncard:new({
+            missionName = "nAVIGATE",
+            modules = {
+                {FILLED, 0, 0},
+                {0, SENSOR, 0},
+                {FILLED, 0, FILLED},
+                {FILLED, 0, FILLED}
+            }
+        }))
+
+        -- Roll Mission : 7
+        add(self.missionCards, missioncard:new({
+            missionName = "rOLL",
+            modules = {
+                {0, FILLED, 0},
+                {FILLED, 0, FILLED},
+                {0, BRAIN, 0},
+                {FILLED, 0, FILLED}
+            }
+        }))
+
+        -- Scan Mission : 8
+        add(self.missionCards, missioncard:new({
+            missionName = "sCAN",
+            modules = {
+                {0, FILLED, FILLED},
+                {FILLED, 0, 0},
+                {SENSOR, 0, 0},
+                {0, FILLED, FILLED}
+            }
+        }))
+        
     end
 }

@@ -7,6 +7,7 @@ boardtile={
     spr_y = 2,
     type = 0,
     used = 0,
+    valid = false,
 
     new=function(self,tbl)
         tbl = tbl or {}

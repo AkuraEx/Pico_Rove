@@ -5,9 +5,21 @@ b_row_h = 1
 b_col_h = 1
 b_row_s = 0
 b_col_s = 0
+
+movement_step = 0
 mission = 1
 move = 0
 info = "pLAY cARD"
+
+-- Double-selection variables for finishing movement early
+last_select_row = 0
+last_select_col = 0
+last_select_time = 0
+double_click_threshold = 0.5  -- Time window in seconds for double-selection
+
+-- Mission system variables
+mission_deck = nil
+current_mission = nil
 
 function init_actors()
   deck = deck:new()
@@ -24,6 +36,13 @@ function init_actors()
   board = board:new()
   board:init()
 
+
+  -- Mission deck initialization
+  mission_deck = deck:new()
+  mission_deck:init_missions()
+  mission_deck:shuffle_missions()
+  current_mission = mission_deck:pop_mission()
+
 end
 
 function update_game()
@@ -35,14 +54,14 @@ function update_game()
 end
 
 function draw_screen()
-    rectfill(0, 0, 127, 127, DARK_GREY)
+    rectfill(0, 0, 127, 127, DARK_BLUE)
 
     -- Game Info
     print(info, 0, 0, WHITE)
     print("mOVES:", 0, 10, GREEN)
-    print(move, 47, 10, GREEN)
+    print(move, 50, 10, GREEN)
     print("mISSION:", 0, 20, WHITE)
-    print(mission, 47, 20, WHITE)
+    print(current_mission.missionName, 50, 20, WHITE)
 
     -- # Means Size in Lua. Weird AF syntax
     for i = 1, #hand do
@@ -53,6 +72,12 @@ function draw_screen()
 
     deck:draw()
     board:draw()
+    
+    -- Draw current mission
+    if current_mission then
+        current_mission:draw()
+    end
+    
     high_light()
 end
 
@@ -65,21 +90,77 @@ function load_monogram()
 end
 
 function high_light()
-    if card_phase then 
-      start = ((c_h - 1) * 18) + 4 
-      rect(start, hand[c_h].y - 1, start + 18, hand[c_h].y + 25, GREEN)
-    elseif board_phase then
-      x = 12 + (19 * (b_col_h - 1))
-      y = 30 + (14 * (b_row_h - 1))
+    if board_phase then
+      
+        -- Normal cursor highlighting
+        board:board_rect(b_row_h, b_col_h, GREEN, false)
 
-      rect(x, y, x + 19, y + 14, GREEN)
+        if b_row_s ~= 0 then
+          board:board_rect(b_row_s, b_col_s, RED, false)
 
-      if(b_col_s ~= 0) then
-        x = 12 + (19 * (b_col_s - 1))
-        y = 30 + (14 * (b_row_s - 1))
-
-        rect(x, y, x + 19, y + 14, WHITE)
-      end
-
+        end
     end
+end
+
+-- TODO: Reuse with passed flag to also check mission success after card placement
+-- TODO: Adjust to allow for flexible grid, that'll be a doozy
+
+-- Check if current mission is completed
+-- Mission logic: 6 filled positions + 1 specific module in the 3x4 pattern
+function check_mission_complete()
+  local mission_modules = current_mission.modules
+  
+  -- Count filled positions and check for required specific module
+  local filled_count = 0
+  local required_module_found = false
+  local required_module = nil
+  
+  -- First pass: identify the required specific module (non-EMPTY, non-FILLED)
+  for i = 1, 4 do
+    for j = 1, 3 do
+      if mission_modules[i][j] ~= EMPTY and mission_modules[i][j] ~= FILLED then
+        required_module = mission_modules[i][j]
+        break
+      end
+    end
+    if required_module then break end
+  end
+  
+  -- Second pass: check if pattern exists anywhere on board
+  for start_row = 1, 1 do  -- 4x5 board can fit 3x4 pattern starting at row 1 only
+    for start_col = 1, 3 do  -- Can start at columns 1, 2, or 3
+      filled_count = 0
+      required_module_found = false
+      
+      -- Check each position in the 3x4 pattern
+      for pattern_row = 1, 4 do
+        for pattern_col = 1, 3 do
+          local board_row = start_row + pattern_row - 1
+          local board_col = start_col + pattern_col - 1
+          local mission_value = mission_modules[pattern_row][pattern_col]
+          local board_value = board.boardState[board_row][board_col].type
+          
+          if mission_value == FILLED then
+            -- Count filled positions
+            if board_value ~= EMPTY then
+              filled_count += 1
+            end
+          elseif mission_value ~= EMPTY then
+            -- Check for specific required module
+            if board_value == mission_value then
+              required_module_found = true
+              filled_count += 1
+            end
+          end
+        end
+      end
+      
+      -- Check if this position satisfies mission requirements
+      if filled_count >= 6 and (required_module == nil or required_module_found) then
+        return true
+      end
+    end
+  end
+  
+  return false
 end

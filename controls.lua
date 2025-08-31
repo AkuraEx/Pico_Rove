@@ -15,7 +15,7 @@ function play_card()
         move += hand[c_h].value
     end
     deli(hand, c_h)
-    c_h = 1
+    c_h = 0
     card_phase = false
     board_phase = true
     info = "mOVE tILES"
@@ -44,31 +44,44 @@ function play_board()
         info = "mOVE tILE OR aCTIVATE"
         b_col_s = b_col_h
         b_row_s = b_row_h
+
+        -- Draw Valid Path
+        board:valid_path(b_row_s, b_col_s, false)
     -- Press x with module selected
     elseif btnp(5) and b_row_s ~= 0 then
-        -- Very Long Swap Statement
-        board.boardState[b_row_s][b_col_s].type, board.boardState[b_row_h][b_col_h].type = board.boardState[b_row_h][b_col_h].type, board.boardState[b_row_s][b_col_s].type
-        board.boardState[b_row_s][b_col_s].spr, board.boardState[b_row_h][b_col_h].spr = board.boardState[b_row_h][b_col_h].spr, board.boardState[b_row_s][b_col_s].spr
-        board.boardState[b_row_s][b_col_s].used, board.boardState[b_row_h][b_col_h].used = board.boardState[b_row_h][b_col_h].used, board.boardState[b_row_s][b_col_s].used
-        b_row_s = 0
-        b_col_s = 0
-        move -= 1
+
+        -- Valid Move Check
+        if board:move_tile() then
+            b_row_s = 0
+            b_col_s = 0
+            board:visit_reset()
+            move -= 1
+        end
 
         if(move == 0) then
             card_phase = true
             board_phase = false
             info = "pLAY cARD"
+            c_h = 1
         end
     end
-
     -- back out of tile
     if btnp(4) and b_row_s ~= 0 then
         b_row_s = 0
         b_col_s = 0
+        board:visit_reset()
         info = "mOVE tILES"
     end
 end
 
+
+--
+--   if(deck.cardAmount > 0) then
+--      hand[c_h] = deck:pop()
+--    else
+--      deli(hand, c_h)
+--      c_h = 1
+--    end
 
 --
 --   if(deck.cardAmount > 0) then
