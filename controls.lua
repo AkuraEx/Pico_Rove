@@ -44,9 +44,21 @@ function play_board()
         info = "mOVE tILE OR aCTIVATE"
         b_col_s = b_col_h
         b_row_s = b_row_h
+        module = board.boardState[b_row_s][b_col_s].type
 
         -- Draw Valid Path
-        board:valid_path(b_row_s, b_col_s, false)
+        if module == COIL then        
+            board:coil_valid_path(b_row_s, b_col_s, 1, 0, false)
+            board:coil_valid_path(b_row_s, b_col_s, 1, 1, false)
+            board:coil_valid_path(b_row_s, b_col_s, 0, 1, false)
+            board:coil_valid_path(b_row_s, b_col_s, -1, 0, false)
+            board:coil_valid_path(b_row_s, b_col_s, -1, -1, false)
+            board:coil_valid_path(b_row_s, b_col_s, 0, -1, false)
+            board:coil_valid_path(b_row_s, b_col_s, 1, -1, false)
+            board:coil_valid_path(b_row_s, b_col_s, -1, 1, false)
+        else 
+            board:valid_path(module)
+        end
     -- Press x with module selected
     elseif btnp(5) and b_row_s ~= 0 then
 
@@ -54,7 +66,7 @@ function play_board()
         if board:move_tile() then
             b_row_s = 0
             b_col_s = 0
-            board:visit_reset()
+            board:valid_reset()
             move -= 1
         end
 
@@ -69,7 +81,7 @@ function play_board()
     if btnp(4) and b_row_s ~= 0 then
         b_row_s = 0
         b_col_s = 0
-        board:visit_reset()
+        board:valid_reset()
         info = "mOVE tILES"
     end
 end

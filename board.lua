@@ -1,7 +1,6 @@
 -- Board Class
 board={
     boardState = {},
-    isVisited = {},
 
     -- New Board Object
     new=function(self,tbl)
@@ -16,13 +15,11 @@ board={
     init = function(self)
         for i = 1, 4 do
             self.boardState[i] = {}
-            self.isVisited[i] = {}
             for j = 1, 5 do
             self.boardState[i][j] = boardtile:new({
                 x = 16 + (19 * (j - 1)),
                 y = 34 + (14 * (i - 1)),
             })
-            self.isVisited[i][j] = false
             end
         end
 
@@ -79,53 +76,52 @@ board={
     end,
 
     -- Recursive Valid Path Function
-    valid_path = function(self, row, col, pass)
-        if row < 1 or row > 4 or col < 1 or col > 5 or self.isVisited[row][col] == true then
+    valid_path = function(self, module)
+
+        for i = 1, 4 do
+            for j = 1, 5 do
+                if module == BRAIN and self.boardState[i][j].type == EMPTY and (i == b_row_s or j == b_col_s) then
+                    self.boardState[i][j].valid = true
+
+                elseif module == GRIPPER and self.boardState[i][j].type == EMPTY and (i >= b_row_s - 1 and i <= b_row_s + 1 and j >= b_col_s - 1 and j <= b_col_s + 1) then
+                    self.boardState[i][j].valid = true
+
+                elseif module == LASER and self.boardState[i][j].type == EMPTY and ((i == b_row_s or j == b_col_s) or (abs(i - b_row_s) == abs(j - b_col_s))) then
+                    self.boardState[i][j].valid = true
+
+                elseif module == MOTOR and (i == b_row_s or j == b_col_s) and (i >= b_row_s - 1 and i <= b_row_s + 1 and j >= b_col_s - 1 and j <= b_col_s + 1) then
+                    self.boardState[i][j].valid = true
+
+                elseif module == SENSOR and self.boardState[i][j].type == EMPTY and (abs(i - b_row_s) == abs(j - b_col_s)) then
+                    self.boardState[i][j].valid = true
+                end
+            end
+        end
+
+    end,
+
+    coil_valid_path = function(self, row, col, dx, dy, pass)
+        local new_row = row + dx
+        local new_col = col + dy
+
+        if new_row < 1 or new_row > 4 or new_col < 1 or new_col > 5 then
             return
         end
 
         local new_pass = pass
 
-        if self.boardState[b_row_s][b_col_s].type == BRAIN and self.boardState[row][col].type == EMPTY and (row == b_row_s or col == b_col_s) then
-            self.boardState[row][col].valid = true
-        elseif self.boardState[b_row_s][b_col_s].type == GRIPPER and self.boardState[row][col].type == EMPTY and (row >= b_row_s - 1 and row <= b_row_s + 1 and col >= b_col_s - 1 and col <= b_col_s + 1) then
-            self.boardState[row][col].valid = true
-        elseif self.boardState[b_row_s][b_col_s].type == LASER and self.boardState[row][col].type == EMPTY and ((row == b_row_s or col == b_col_s) or (row - b_row_s == col - b_col_s)) then
-            self.boardState[row][col].valid = true
-        elseif self.boardState[b_row_s][b_col_s].type == MOTOR and (row == b_row_s or col == b_col_s) and (row >= b_row_s - 1 and row <= b_row_s + 1 and col >= b_col_s - 1 and col <= b_col_s + 1) then
-            self.boardState[row][col].valid = true
-        elseif self.boardState[b_row_s][b_col_s].type == SENSOR and self.boardState[row][col].type == EMPTY and (row - b_row_s == col - b_col_s) then
-            self.boardState[row][col].valid = true
-
-
-        -- Gotta fix this
-        -- Lua giving me trouble with pass by value for some reason
-        elseif self.boardState[b_row_s][b_col_s].type == COIL
-            and self.boardState[row][col].type ~= EMPTY
-            and ((row == b_row_s or col == b_col_s) or (row - b_row_s == col - b_col_s)) then
+        if self.boardState[new_row][new_col].type ~= EMPTY then
             new_pass = true
-        elseif new_pass == true
-            and self.boardState[row][col].type == EMPTY
-            and ((row == b_row_s or col == b_col_s) or (row - b_row_s == col - b_col_s)) then
-            self.boardState[row][col].valid = true
+        elseif self.boardState[new_row][new_col].type == EMPTY and new_pass then
+            self.boardState[new_row][new_col].valid = true
         end
 
-
-        self.isVisited[row][col] = true
-
-        self:valid_path(row + 1, col, new_pass)
-        self:valid_path(row + 1, col + 1, new_pass)
-        self:valid_path(row + 1, col - 1, new_pass)
-        self:valid_path(row - 1, col, new_pass)
-        self:valid_path(row - 1, col + 1, new_pass)
-        self:valid_path(row - 1, col - 1, new_pass)
-        self:valid_path(row, col - 1, new_pass)
-        self:valid_path(row, col + 1, new_pass)
+        self:coil_valid_path(new_row, new_col, dx, dy, new_pass)
     end,
 
 
-    -- Board rect function
-    board_rect = function(self, row, col, color, fill)
+        -- Board rect function
+        board_rect = function(self, row, col, color, fill)
           x = 16 + (19 * (col - 1))
           y = 34 + (14 * (row - 1))
           if fill then
@@ -135,11 +131,10 @@ board={
           end
     end,
 
-    -- Visit Reset function
-    visit_reset = function(self)
+    -- Valid Reset function
+    valid_reset = function(self)
         for i = 1, 4 do
             for j = 1, 5 do
-                self.isVisited[i][j] = false
                 self.boardState[i][j].valid = false
             end
         end
