@@ -101,22 +101,20 @@ board={
     end,
 
     coil_valid_path = function(self, row, col, dx, dy, pass)
-        local new_row = row + dx
-        local new_col = col + dy
+        new_row = row + dx
+        new_col = col + dy
 
         if new_row < 1 or new_row > 4 or new_col < 1 or new_col > 5 then
             return
         end
 
-        local new_pass = pass
-
         if self.boardState[new_row][new_col].type ~= EMPTY then
-            new_pass = true
-        elseif self.boardState[new_row][new_col].type == EMPTY and new_pass then
+            pass = true
+        elseif self.boardState[new_row][new_col].type == EMPTY and pass then
             self.boardState[new_row][new_col].valid = true
         end
 
-        self:coil_valid_path(new_row, new_col, dx, dy, new_pass)
+        self:coil_valid_path(new_row, new_col, dx, dy, pass)
     end,
 
 
