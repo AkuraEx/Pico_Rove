@@ -42,7 +42,6 @@ card={
     
     match = function(self, r, c)
 
-        --TODOOOOOOOOOOOOOOOOOOO
         -- match check
         for i = 1, 3 do
             for j = 1, 3 do

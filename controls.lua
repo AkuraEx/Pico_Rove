@@ -9,12 +9,16 @@ function play_card()
   end
   -- x
   if btnp(5) then
-    -- TOOOODOOOOOOOOOOOOOOOOOOOOO
-    if hand[c_h]:match(0, 0) or hand[c_h]:match(1, 0) or hand[c_h]:match(0, 1) or hand[c_h]:match(1, 1) or hand[c_h]:match(0, 2) or hand[c_h]:match(1, 2) then
-        move += hand[c_h].matchValue
-    else 
-        move += hand[c_h].value
+    value = hand[c_h].value
+    for i = 0, ROWS - 3 do
+        for j = 0, COLS - 3 do
+            if hand[c_h]:match(i, j) then
+                value = hand[c_h].matchValue
+            break
+            end
+        end
     end
+    move += value
     deli(hand, c_h)
     c_h = 0
     card_phase = false
@@ -69,6 +73,21 @@ function play_board()
             b_col_s = 0
             board:valid_reset()
             move -= 1
+        end
+
+        for i = 0, 2 do
+            for j = 0, 3 do
+                if board:match(i, j) then
+                    move = 0
+                    if #hand > 0 do
+                        add(hand, deck:pop())
+                    end
+                    card_phase = true
+                    board_phase = false
+                    current_mission = mission_deck:pop_mission()
+                    mission += 1
+                end
+            end
         end
 
         if(move == 0) then

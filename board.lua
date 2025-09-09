@@ -35,8 +35,8 @@ board={
     randomize_modules = function(self)
         count = 1
         while count ~= 7 do
-            local i = flr(rnd(6)) + 1
-            local j = flr(rnd(6)) + 1
+            local i = flr(rnd(4)) + 2
+            local j = flr(rnd(4)) + 2
             if self.boardState[i][j].type == EMPTY then
                 self.boardState[i][j].type = self.typelist[count]
                 self.boardState[i][j].spr = self.sprlist[count]
@@ -138,6 +138,22 @@ board={
                 self.boardState[i][j].valid = false
             end
         end
+    end,
+
+    match = function(self, r, c)
+        -- FIX THIS
+        -- match check
+        for i = 1, 4 do
+            for j = 1, 3 do
+                if(current_mission.modules[i][j] == FILLED and self.boardState[i + r][j + c].type == 0) then
+                    return false
+                elseif(current_mission.modules[i][j] ~= FILLED and current_mission.modules[i][j] > EMPTY and self.boardState[i + r][j + c] ~= current_mission.modules[i][j]) then
+                    return false
+                end
+            end
+        end
+
+        return true
     end
 
 
