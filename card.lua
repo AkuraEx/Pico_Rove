@@ -23,7 +23,7 @@ card={
     end,
 
     draw = function(self, index)
-        start = ((index - 1) * 18) + 5 
+        start = ((index - 1) * 18) + (((5 - #hand) * 18) / 2) + 10
         moduleStart = start + 3
         if index == c_h and self.y >= 95 then
             self.y -= 1
@@ -42,6 +42,7 @@ card={
     
     match = function(self, r, c)
 
+        --TODOOOOOOOOOOOOOOOOOOO
         -- match check
         for i = 1, 3 do
             for j = 1, 3 do

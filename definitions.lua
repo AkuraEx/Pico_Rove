@@ -4,6 +4,13 @@ SCREEN_WIDTH = 128
 
 MIDDLE = SCREEN_HEIGHT / 2
 
+-- Board
+ROWS = 6
+COLS = 6
+M_H = 13
+M_W = 20
+
+
 -- Pico 8 Colors
 BLACK = 0
 DARK_BLUE = 1

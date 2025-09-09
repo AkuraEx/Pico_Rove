@@ -9,6 +9,7 @@ function play_card()
   end
   -- x
   if btnp(5) then
+    -- TOOOODOOOOOOOOOOOOOOOOOOOOO
     if hand[c_h]:match(0, 0) or hand[c_h]:match(1, 0) or hand[c_h]:match(0, 1) or hand[c_h]:match(1, 1) or hand[c_h]:match(0, 2) or hand[c_h]:match(1, 2) then
         move += hand[c_h].matchValue
     else 
@@ -28,7 +29,7 @@ function play_board()
         b_col_h -= 1
     end
     -- right
-    if btnp(1) and b_col_h < 5 then
+    if btnp(1) and b_col_h < COLS then
         b_col_h += 1
     end
     -- up
@@ -36,7 +37,7 @@ function play_board()
         b_row_h -= 1
     end
     -- down
-    if btnp(3) and b_row_h < 4 then
+    if btnp(3) and b_row_h < ROWS then
         b_row_h += 1
     end
     -- Press x without module selected

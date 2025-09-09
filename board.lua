@@ -1,6 +1,8 @@
 -- Board Class
 board={
     boardState = {},
+    typelist = {GRIPPER, COIL, MOTOR, BRAIN, SENSOR, LASER},
+    sprlist = {64, 67, 70, 96, 99, 102},
 
     -- New Board Object
     new=function(self,tbl)
@@ -13,48 +15,48 @@ board={
 
     -- Board Init
     init = function(self)
-        for i = 1, 4 do
+        for i = 1, ROWS do
             self.boardState[i] = {}
-            for j = 1, 5 do
+            for j = 1, COLS do
             self.boardState[i][j] = boardtile:new({
-                x = 16 + (19 * (j - 1)),
-                y = 34 + (14 * (i - 1)),
+                x = 10 + (18 * (j - 1)),
+                y = 30 + (10 * (i - 1)),
+                type = EMPTY,
+                spr = 73,
+                used = 0,
             })
             end
         end
 
-        -- Hardcoded starting values
-        self.boardState[2][2].type = GRIPPER
-        self.boardState[2][2].spr = 64
-        self.boardState[2][2].used = 1
-        self.boardState[2][3].type = COIL
-        self.boardState[2][3].spr = 67
-        self.boardState[2][3].used = 1
-        self.boardState[2][4].type = MOTOR
-        self.boardState[2][4].spr = 70
-        self.boardState[2][4].used = 1
-        self.boardState[3][2].type = BRAIN
-        self.boardState[3][2].spr = 96
-        self.boardState[3][2].used = 1
-        self.boardState[3][3].type = SENSOR
-        self.boardState[3][3].spr = 99
-        self.boardState[3][3].used = 1
-        self.boardState[3][4].type = LASER
-        self.boardState[3][4].spr = 102
-        self.boardState[3][4].used = 1
+        self:randomize_modules()
+    end,
+
+    -- Randomize module locations
+    randomize_modules = function(self)
+        count = 1
+        while count ~= 7 do
+            local i = flr(rnd(6)) + 1
+            local j = flr(rnd(6)) + 1
+            if self.boardState[i][j].type == EMPTY then
+                self.boardState[i][j].type = self.typelist[count]
+                self.boardState[i][j].spr = self.sprlist[count]
+                self.boardState[i][j].used = 1
+                count += 1
+            end
+        end
     end,
 
     -- Draw
     draw = function(self)
-        for i = 1, 4 do
-            for j = 1, 5 do
+        for i = 1, ROWS do
+            for j = 1, COLS do
                 self.boardState[i][j]:draw()
             end
         end
 
         -- draw valid square separately
-        for i = 1, 4 do
-            for j = 1, 5 do
+        for i = 1, ROWS do
+            for j = 1, COLS do
                 if self.boardState[i][j].valid then
                     self:board_rect(i, j, WHITE, false)
                 end
@@ -78,8 +80,8 @@ board={
     -- Recursive Valid Path Function
     valid_path = function(self, module)
 
-        for i = 1, 4 do
-            for j = 1, 5 do
+        for i = 1, ROWS do
+            for j = 1, COLS do
                 if module == BRAIN and self.boardState[i][j].type == EMPTY and (i == b_row_s or j == b_col_s) then
                     self.boardState[i][j].valid = true
 
@@ -104,7 +106,7 @@ board={
         new_row = row + dx
         new_col = col + dy
 
-        if new_row < 1 or new_row > 4 or new_col < 1 or new_col > 5 then
+        if new_row < 1 or new_row > ROWS or new_col < 1 or new_col > COLS then
             return
         end
 
@@ -120,19 +122,19 @@ board={
 
         -- Board rect function
         board_rect = function(self, row, col, color, fill)
-          x = 16 + (19 * (col - 1))
-          y = 34 + (14 * (row - 1))
+          x = 10 + (18 * (col - 1))
+          y = 30 + (10 * (row - 1))
           if fill then
-            rectfill(x, y, x + 19, y + 14, color)
+            rectfill(x, y, x + 17, y + 10, color)
           else
-            rect(x, y, x + 19, y + 14, color)
+            rect(x, y, x + 17, y + 10, color)
           end
     end,
 
     -- Valid Reset function
     valid_reset = function(self)
-        for i = 1, 4 do
-            for j = 1, 5 do
+        for i = 1, ROWS do
+            for j = 1, COLS do
                 self.boardState[i][j].valid = false
             end
         end
