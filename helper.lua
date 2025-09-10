@@ -57,10 +57,10 @@ function draw_screen()
 
     -- Game Info
     print(info, 0, 0, WHITE)
-    print("mOVES:", 0, 10, GREEN)
-    print(move, 50, 10, GREEN)
-    -- print("mISSION:", 0, 20, WHITE)
-    -- print(current_mission.missionName, 50, 20, WHITE)
+    print("mOVES:", 0, 8, GREEN)
+    print(move, 50, 8, GREEN)
+    print("mISSION:", 0, 16, WHITE)
+    print(current_mission.missionName, 50, 16, WHITE)
 
     -- # Means Size in Lua. Weird AF syntax
     for i = 1, #hand do
