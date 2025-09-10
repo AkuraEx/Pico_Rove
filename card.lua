@@ -1,6 +1,6 @@
 -- Card Class
 card={
-    x = 0,
+    x = 106,
     y = 100,
     spr = 0,
     spr_x = 2.5,
@@ -24,20 +24,29 @@ card={
 
     draw = function(self, index)
         start = ((index - 1) * 18) + (((5 - #hand) * 18) / 2) + 10
-        moduleStart = start + 3
-        if index == c_h and self.y >= 95 then
+        moduleStart = self.x + 3
+
+        if index == c_h and self.y >= 98 then
             self.y -= 1
         elseif index ~= c_h and self.y <= 100 then 
             self.y += 1
         end
-        spr(self.spr, start, self.y, self.spr_x, self.spr_y)
-        print(self.value, start, self.y, WHITE)
+
+        if self.x < start then
+            self.x += 1
+        elseif self.x > start then
+            self.x -= 1
+        end
+
+
+        spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
+        print(self.value, self.x, self.y, WHITE)
         for i = 0, 2 do
             for j = 0, 2 do
                 rect(moduleStart + (4 * j), self.y + 9 + (3 * i), moduleStart + (4 * j) + 2, self.y + 10 + (3 * i), self.modules[i + 1][j + 1])
             end
         end
-        print(self.matchValue, start + 12, self.y + 18, WHITE)
+        print(self.matchValue, self.x + 12, self.y + 18, WHITE)
     end,
     
     match = function(self, r, c)
@@ -65,7 +74,7 @@ card={
 
 -- Mission Card Class - Display only, shows current goal
 missioncard={
-    x = 90,  -- Moved to right side (was 5)
+    x = 85,  -- Moved to right side (was 5)
     y = 0,   -- Keep at top
     spr = 0,
     missionName = "",

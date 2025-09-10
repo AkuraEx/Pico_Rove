@@ -46,7 +46,7 @@ function play_board()
     end
     -- Press x without module selected
     if btnp(5) and b_row_s == 0 and board.boardState[b_row_h][b_col_h].type ~= 0 then
-        info = "mOVE tILE OR aCTIVATE"
+        info = "mOVE tILE OR aCTIVATE aBILITY"
         b_col_s = b_col_h
         b_row_s = b_row_h
         module = board.boardState[b_row_s][b_col_s].type

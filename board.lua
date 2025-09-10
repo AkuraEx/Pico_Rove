@@ -19,8 +19,8 @@ board={
             self.boardState[i] = {}
             for j = 1, COLS do
             self.boardState[i][j] = boardtile:new({
-                x = 10 + (18 * (j - 1)),
-                y = 30 + (10 * (i - 1)),
+                x = 8 + (19 * (j - 1)),
+                y = 24 + (12 * (i - 1)),
                 type = EMPTY,
                 spr = 73,
                 used = 0,
@@ -122,8 +122,8 @@ board={
 
         -- Board rect function
         board_rect = function(self, row, col, color, fill)
-          x = 10 + (18 * (col - 1))
-          y = 30 + (10 * (row - 1))
+          x = 8 + (19 * (col - 1))
+          y = 24 + (12 * (row - 1))
           if fill then
             rectfill(x, y, x + 17, y + 10, color)
           else
