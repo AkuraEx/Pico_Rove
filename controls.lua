@@ -85,7 +85,7 @@ function play_board()
                     card_phase = true
                     board_phase = false
                     current_mission = mission_deck:pop_mission()
-                    mission += 1
+                    break
                 end
             end
         end

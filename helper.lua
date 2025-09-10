@@ -7,7 +7,6 @@ b_row_s = 0
 b_col_s = 0
 
 movement_step = 0
-mission = 1
 move = 0
 info = "pLAY cARD"
 

@@ -147,7 +147,7 @@ board={
             for j = 1, 3 do
                 if(current_mission.modules[i][j] == FILLED and self.boardState[i + r][j + c].type == 0) then
                     return false
-                elseif(current_mission.modules[i][j] ~= FILLED and current_mission.modules[i][j] > EMPTY and self.boardState[i + r][j + c] ~= current_mission.modules[i][j]) then
+                elseif(current_mission.modules[i][j] ~= FILLED and current_mission.modules[i][j] > EMPTY and self.boardState[i + r][j + c].type ~= current_mission.modules[i][j]) then
                     return false
                 end
             end
