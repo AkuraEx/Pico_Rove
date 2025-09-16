@@ -6,6 +6,9 @@ b_col_h = 1
 b_row_s = 0
 b_col_s = 0
 
+frame = 0
+counter = 0
+
 movement_step = 0
 move = 0
 info = "pLAY cARD"
@@ -50,17 +53,23 @@ function update_game()
   elseif board_phase then
     play_board()
   end
+
+  counter += 1
+  if counter > 2000 then
+    counter = 0
+  end
 end
 
 function draw_screen()
-    rectfill(0, 0, 127, 127, DARK_GREY)
+    rectfill(0, 0, 127, 127, PEACH)
 
     -- Game Info
-    print(info, 0, 0, WHITE)
-    print("mOVES:", 0, 8, GREEN)
-    print(move, 50, 8, GREEN)
-    print("mISSION:", 0, 16, WHITE)
-    print(current_mission.missionName, 50, 16, WHITE)
+    print(info, 1, 0, BLACK)
+    print("mOVES:", 1, 8, GREEN)
+    print(move, 37, 8, GREEN)
+    print("mISSION:", 1, 16, BLACK)
+    print(current_mission.missionName, 50, 16, BLACK)
+
 
     -- # Means Size in Lua. Weird AF syntax
     for i = 1, #hand do

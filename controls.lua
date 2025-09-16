@@ -85,6 +85,7 @@ function play_board()
                     end
                     card_phase = true
                     board_phase = false
+                    add(deck.completed, current_mission)
                     current_mission = mission_deck:pop_mission()
                     break
                 end

@@ -46,7 +46,7 @@ card={
                 rect(moduleStart + (4 * j), self.y + 9 + (3 * i), moduleStart + (4 * j) + 2, self.y + 10 + (3 * i), self.modules[i + 1][j + 1])
             end
         end
-        print(self.matchValue, self.x + 12, self.y + 18, WHITE)
+        print(self.matchValue, self.x + 11, self.y + 18, WHITE)
     end,
     
     match = function(self, r, c)
@@ -76,7 +76,7 @@ card={
 missioncard={
     x = 85,  -- Moved to right side (was 5)
     y = 0,   -- Keep at top
-    spr = 0,
+    spr = {0, 0},
     missionName = "",
     modules = {
         {0, 0, 0},
@@ -94,6 +94,9 @@ missioncard={
     end,
 
     draw = function(self)
+
+    rectfill(109, 9, 121, 21, LAVENDER)
+    rect(108, 8, 122, 22, BLACK)
         -- Draw 3x4 pattern - moved right 3 pixels and down 2 pixels
         for i = 0, 3 do  -- 4 rows
             for j = 0, 2 do  -- 3 columns

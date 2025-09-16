@@ -3,9 +3,9 @@ function _init()
     init_actors()
 
 
-    -- Changing Peach to be transparent
+    -- Changing GREY to be transparent
     palt(BLACK, false)
-    palt(PEACH, true)
+    palt(GREY, true)
 
     -- Loading monogram
     load_monogram()
