@@ -64,11 +64,11 @@ function draw_screen()
     rectfill(0, 0, 127, 127, PEACH)
 
     -- Game Info
-    print(info, 1, 0, BLACK)
-    print("mOVES:", 1, 8, GREEN)
-    print(move, 37, 8, GREEN)
-    print("mISSION:", 1, 16, BLACK)
-    print(current_mission.missionName, 50, 16, BLACK)
+    print(info, 1, 1, BLACK)
+    print("mOVES:", 1, 9, BLACK)
+    print(move, 37, 9, BLACK)
+    print("mISSION:", 1, 17, BLACK)
+    print(current_mission.missionName, 50, 17, BLACK)
 
 
     -- # Means Size in Lua. Weird AF syntax

@@ -95,13 +95,13 @@ missioncard={
 
     draw = function(self)
 
-    rectfill(109, 9, 121, 21, LAVENDER)
-    rect(108, 8, 122, 22, BLACK)
+    rectfill(100, 10, 112, 22, LAVENDER)
+    rect(99, 9, 113, 23, BLACK)
         -- Draw 3x4 pattern - moved right 3 pixels and down 2 pixels
         for i = 0, 3 do  -- 4 rows
             for j = 0, 2 do  -- 3 columns
-                rect(self.x + 25 + (4 * j), self.y + 10 + (3 * i), 
-                     self.x + 25 + (4 * j) + 2, self.y + 11 + (3 * i), 
+                rect(self.x + 16 + (4 * j), self.y + 11 + (3 * i), 
+                     self.x + 16 + (4 * j) + 2, self.y + 12 + (3 * i), 
                      self.modules[i + 1][j + 1])
             end
         end

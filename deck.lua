@@ -28,16 +28,20 @@ deck={
         end
         print(self.cardAmount, self.x, self.y, WHITE)
 
-
+        for i = 1, 7 do
+            rect(116, (12 * i) + 2, 125, (12 * i) + 11, BLACK)
+        end 
         for i = 1, #self.completed do
             -- draw guy
-            if counter % 20 == 0 then
+            if counter % 30 == 0 then
             frame = 1
-            elseif counter % 10 == 0 then
+            elseif counter % 20 == 0 then
             frame = 2
+            elseif counter % 10 == 0 then
+            frame = 3
             end
 
-            spr(self.completed[i].spr[frame], i * 8 + 36, 8)
+            spr(self.completed[i].spr[frame], 117, (12 * i) + 3)
         end
 
 
@@ -223,7 +227,7 @@ deck={
                 {0, FILLED, LASER},
                 {FILLED, FILLED, 0}
             },
-            spr = {7, 8}
+            spr = {61, 62, 63}
         }))
         
         -- Bridge Mission : 2
@@ -235,7 +239,7 @@ deck={
                 {FILLED, GRIPPER, 0},
                 {FILLED, 0, 0}
             },
-            spr = {7, 8}
+            spr = {55, 56, 57}
         }))
 
         -- Drill Mission  : 3
@@ -247,7 +251,7 @@ deck={
                 {FILLED, 0, FILLED},
                 {0, MOTOR, 0}
             },
-            spr = {7, 8}
+            spr = {13, 14, 15}
         }))
         
         -- Jump Mission  : 4
@@ -259,7 +263,7 @@ deck={
                 {0, FILLED, 0},
                 {0, FILLED, 0}
             },
-            spr = {7, 8}
+            spr = {58, 59, 60}
         }))
 
         -- Learn Mission  : 5
@@ -271,7 +275,7 @@ deck={
                 {0, FILLED, FILLED},
                 {BRAIN, FILLED, FILLED}
             },
-            spr = {7, 8}
+            spr = {39, 40, 41}
         }))
 
         -- Navigate Mission  : 6
@@ -283,7 +287,7 @@ deck={
                 {FILLED, 0, FILLED},
                 {FILLED, 0, FILLED}
             },
-            spr = {7, 8}
+            spr = {42, 43, 44}
         }))
 
         -- Roll Mission : 7
@@ -295,7 +299,7 @@ deck={
                 {0, BRAIN, 0},
                 {FILLED, 0, FILLED}
             },
-            spr = {9, 10}
+            spr = {10, 11, 12}
         }))
 
         -- Scan Mission : 8
@@ -307,7 +311,7 @@ deck={
                 {SENSOR, 0, 0},
                 {0, FILLED, FILLED}
             },
-            spr = {7, 8}
+            spr = {7, 8, 9}
         }))
         
     end
