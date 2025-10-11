@@ -43,3 +43,6 @@ LASER = 2
 NORMAL = 5
 HARD = 4
 IMPOSSIBLE = 3
+
+
+INGAME = false

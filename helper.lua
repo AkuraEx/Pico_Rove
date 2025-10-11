@@ -23,7 +23,7 @@ double_click_threshold = 0.5  -- Time window in seconds for double-selection
 mission_deck = nil
 current_mission = nil
 
-function init_actors()
+function start_game()
   deck = deck:new()
   deck:init()
   deck:shuffle()
