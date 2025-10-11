@@ -66,7 +66,7 @@ function play_board()
             board:valid_path(module)
         end
     -- Press x with module selected
-    elseif btnp(5) and b_row_s ~= 0 then
+    elseif btnp(5) and b_row_s ~= 0 and board.boardState[b_row_s][b_col_s] ~= board.boardState[b_row_h][b_col_h] then
 
         -- Valid Move Check
         if board:move_tile() then

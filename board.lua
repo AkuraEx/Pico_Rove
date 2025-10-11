@@ -66,13 +66,46 @@ board={
 
     -- Move Tile
     move_tile = function(self)
-        if self.boardState[b_row_h][b_col_h].valid then
+            -- Check motor push
+        if self.boardState[b_row_s][b_col_s].type == MOTOR and self.boardState[b_row_h][b_col_h].type ~= EMPTY and self:push() then
+            return true
+        elseif self.boardState[b_row_h][b_col_h].valid then
             -- Very Long Swap Statement
             self.boardState[b_row_s][b_col_s].type, self.boardState[b_row_h][b_col_h].type = self.boardState[b_row_h][b_col_h].type, self.boardState[b_row_s][b_col_s].type
             self.boardState[b_row_s][b_col_s].spr, self.boardState[b_row_h][b_col_h].spr = self.boardState[b_row_h][b_col_h].spr, self.boardState[b_row_s][b_col_s].spr
             self.boardState[b_row_s][b_col_s].used, self.boardState[b_row_h][b_col_h].used = self.boardState[b_row_h][b_col_h].used, self.boardState[b_row_s][b_col_s].used
             return true
         end
+
+        return false
+    end,
+
+    -- Push Tile
+    push = function(self)
+        dx = b_row_h - b_row_s
+        dy = b_col_h - b_col_s
+        edge_x = b_row_s
+        edge_y = b_col_s
+
+        while edge_x > 1 and edge_x < 6 and edge_y > 1 and edge_y < 6 do
+            edge_x += dx
+            edge_y += dy
+
+            if self.boardState[edge_x][edge_y].type == EMPTY then 
+                distance = abs((edge_x - b_row_s) + (edge_y - b_col_s))
+                for i = 1, distance do
+                    self.boardState[edge_x][edge_y].type, self.boardState[edge_x - dx][edge_y - dy].type = self.boardState[edge_x - dx][edge_y - dy].type, self.boardState[edge_x][edge_y].type
+                    self.boardState[edge_x][edge_y].spr, self.boardState[edge_x - dx][edge_y - dy].spr = self.boardState[edge_x - dx][edge_y - dy].spr, self.boardState[edge_x][edge_y].spr
+                    self.boardState[edge_x][edge_y].used, self.boardState[edge_x - dx][edge_y - dy].used = self.boardState[edge_x - dx][edge_y - dy].used, self.boardState[edge_x][edge_y].used
+
+                    edge_x = edge_x - dx
+                    edge_y = edge_y - dy
+                    end
+                return true
+            end
+        end
+
+
 
         return false
     end,
