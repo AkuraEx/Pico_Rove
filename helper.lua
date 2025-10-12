@@ -1,10 +1,24 @@
 card_phase = true
 board_phase = false
+ability_selected = false
+
+-- card highlight
 c_h = 1
+
+-- board row/col highlight and selection
 b_row_h = 1
 b_col_h = 1
 b_row_s = 0
 b_col_s = 0
+
+-- ability row/col highlight and selection
+a_row_h = 0
+a_col_h = 0
+a_row_s = 0
+a_col_s = 0
+
+
+module = EMPTY
 
 frame = 0
 counter = 0
@@ -52,6 +66,8 @@ function update_game()
     play_card()
   elseif board_phase then
     play_board()
+  elseif ability_selected then
+    play_ability()
   end
 
   counter += 1
@@ -108,6 +124,16 @@ function high_light()
           board:board_rect(b_row_s, b_col_s, RED, false)
 
         end
+    end
+
+    if ability_selected then
+
+      board:board_rect(b_row_s, b_col_s, RED, false)
+      board:board_rect(a_row_h, a_col_h, BLUE, false)
+      
+      if a_row_s ~= 0 then
+        board:board_rect(a_row_s, a_col_s, WHITE, false)
+      end
     end
 end
 

@@ -18,6 +18,8 @@ function _update()
     else
     update_game()    
     end
+
+    mouse_timer()
 end
 
 function _draw()
