@@ -70,10 +70,8 @@ board={
         if self.boardState[b_row_s][b_col_s].type == MOTOR and self.boardState[b_row_h][b_col_h].type ~= EMPTY and self:push() then
             return true
         elseif self.boardState[b_row_h][b_col_h].valid then
-            -- Very Long Swap Statement
-            self.boardState[b_row_s][b_col_s].type, self.boardState[b_row_h][b_col_h].type = self.boardState[b_row_h][b_col_h].type, self.boardState[b_row_s][b_col_s].type
-            self.boardState[b_row_s][b_col_s].spr, self.boardState[b_row_h][b_col_h].spr = self.boardState[b_row_h][b_col_h].spr, self.boardState[b_row_s][b_col_s].spr
-            self.boardState[b_row_s][b_col_s].used, self.boardState[b_row_h][b_col_h].used = self.boardState[b_row_h][b_col_h].used, self.boardState[b_row_s][b_col_s].used
+            -- Very short Swap Statement
+            self:swap(b_row_s, b_col_s, b_row_h, b_col_h)
             return true
         end
 
@@ -94,9 +92,7 @@ board={
             if self.boardState[edge_x][edge_y].type == EMPTY then 
                 distance = abs((edge_x - b_row_s) + (edge_y - b_col_s))
                 for i = 1, distance do
-                    self.boardState[edge_x][edge_y].type, self.boardState[edge_x - dx][edge_y - dy].type = self.boardState[edge_x - dx][edge_y - dy].type, self.boardState[edge_x][edge_y].type
-                    self.boardState[edge_x][edge_y].spr, self.boardState[edge_x - dx][edge_y - dy].spr = self.boardState[edge_x - dx][edge_y - dy].spr, self.boardState[edge_x][edge_y].spr
-                    self.boardState[edge_x][edge_y].used, self.boardState[edge_x - dx][edge_y - dy].used = self.boardState[edge_x - dx][edge_y - dy].used, self.boardState[edge_x][edge_y].used
+                    self:swap(edge_x, edge_y, edge_x - dx, edge_y - dy)
 
                     edge_x = edge_x - dx
                     edge_y = edge_y - dy
@@ -108,6 +104,13 @@ board={
 
 
         return false
+    end,
+
+    -- Reusuable Swap Function
+    swap = function(self, r1, c1, r2, c2)
+        self.boardState[r1][c1].type, self.boardState[r2][c2].type = self.boardState[r2][c2].type, self.boardState[r1][c1].type
+        self.boardState[r1][c1].spr, self.boardState[r2][c2].spr = self.boardState[r2][c2].spr, self.boardState[r1][c1].spr
+        self.boardState[r1][c1].used, self.boardState[r2][c2].used = self.boardState[r2][c2].used, self.boardState[r1][c1].used
     end,
 
     -- Recursive Valid Path Function
@@ -152,16 +155,37 @@ board={
         self:coil_valid_path(new_row, new_col, dx, dy, pass)
     end,
 
+    -- Valid path for abilities
+    a_valid_path = function(self)
+        for i = 1, ROWS do
+            for j = 1, COLS do
+                if module == BRAIN and a_row_s ~= 0 and self.boardState[i][j].type == EMPTY and (i == b_row_s or j == b_col_s) and (i >= b_row_s - 1 and i <= b_row_s + 1 and j >= b_col_s - 1 and j <= b_col_s + 1) then
+                    self.boardState[i][j].valid = true
+                elseif (module == LASER or (((module == BRAIN and self.boardState[i][j].type ~= BRAIN)or module == MOTOR) and a_row_s == 0)) and self.boardState[i][j].type ~= EMPTY then
+                    self.boardState[i][j].valid = true
+                elseif module == COIL and self.boardState[i][j].type == EMPTY then
+                    self.boardState[i][j].valid = true
+                elseif module == MOTOR and a_row_s ~= 0 and self.boardState[i][j].type == EMPTY and (i == a_row_s or j == a_col_s) and (i >= a_row_s - 1 and i <= a_row_s + 1 and j >= a_col_s - 1 and j <= a_col_s + 1) then
+                    self.boardState[i][j].valid = true
+                elseif module == SENSOR and self.boardState[i][j].type == SENSOR then
+                    self.boardState[i][j].valid = true
+                elseif module == GRIPPER and self.boardState[i][j].type ~= EMPTY and (i == b_row_s or j == b_col_s) and (i >= b_row_s - 1 and i <= b_row_s + 1 and j >= b_col_s - 1 and j <= b_col_s + 1) then
+                    self.boardState[i][j].valid = true
+                end
+            end
+        end
+    end,
 
-        -- Board rect function
-        board_rect = function(self, row, col, color, fill)
-          x = 1 + (19 * (col - 1))
-          y = 25 + (12 * (row - 1))
-          if fill then
-            rectfill(x, y, x + 17, y + 10, color)
-          else
-            rect(x, y, x + 17, y + 10, color)
-          end
+
+    -- Board rect function
+    board_rect = function(self, row, col, color, fill)
+        x = 1 + (19 * (col - 1))
+        y = 25 + (12 * (row - 1))
+        if fill then
+        rectfill(x, y, x + 17, y + 10, color)
+        else
+        rect(x, y, x + 17, y + 10, color)
+        end
     end,
 
     -- Valid Reset function

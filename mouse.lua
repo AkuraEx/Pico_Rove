@@ -15,6 +15,15 @@ function left_click()
     end
 end
 
+function right_click()
+    if stat(34) == 2 and timer == 0 then
+        timer = 1
+        return true
+    else
+        return false
+    end
+end
+
 function mouse_timer()
     if timer > 0 and timer < 3 then
         timer += 1

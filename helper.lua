@@ -17,6 +17,10 @@ a_col_h = 0
 a_row_s = 0
 a_col_s = 0
 
+-- source row/col
+s_row = 0
+s_col = 0
+
 
 module = EMPTY
 
@@ -132,7 +136,7 @@ function high_light()
       board:board_rect(a_row_h, a_col_h, BLUE, false)
       
       if a_row_s ~= 0 then
-        board:board_rect(a_row_s, a_col_s, WHITE, false)
+        board:board_rect(a_row_s, a_col_s, DARK_GREEN, false)
       end
     end
 end

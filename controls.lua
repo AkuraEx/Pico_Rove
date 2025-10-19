@@ -106,7 +106,7 @@ function play_board()
             for j = 0, 3 do
                 if board:match(i, j) then
                     move = 0
-                    if #hand > 0 do
+                    if deck.cardAmount > 0 do
                         add(hand, deck:pop())
                     end
                     card_phase = true
@@ -127,17 +127,20 @@ function play_board()
         end
 
     -- If Ability Selected
-    elseif btnp(5) and board.boardState[b_row_h][b_col_h] == board.boardState[b_row_s][b_col_s] then
+    elseif (btnp(5) or click) and board.boardState[b_row_h][b_col_h].type ~= EMPTY and board.boardState[b_row_h][b_col_h].used ~= 0 then
         ability_selected = true
         board_phase = false
         board:valid_reset()
+        board:a_valid_path()
         a_row_h = b_row_s
         a_col_h = b_col_s
+        s_row = b_row_s
+        s_col = b_col_s
     end
 
 
     -- back out of tile
-    if btnp(4) and b_row_s ~= 0 then
+    if (btnp(4) or right_click()) and b_row_s ~= 0 then
         b_row_s = 0
         b_col_s = 0
         board:valid_reset()
