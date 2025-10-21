@@ -13,22 +13,31 @@ function _init()
 end
 
 function _update()
-    if not INGAME do
+    if MAINMENU do
     update_title()
-    else
+    elseif INGAME do
     update_game()    
+    elseif GAMEOVER do
+    update_gameover()
     end
 
+    counter += 1
+    if counter > 2000 then
+        counter = 0
+    end
     mouse_timer()
 end
 
 function _draw()
     cls()
 
-    if not INGAME do
-    draw_title()
-    else 
+    if INGAME do
     draw_screen()
+    elseif MAINMENU do 
+    draw_title()
+    elseif GAMEOVER do
+    draw_screen()
+    draw_gameover()
     end
 
     draw_mouse()

@@ -25,7 +25,6 @@ s_col = 0
 module = EMPTY
 
 frame = 0
-counter = 0
 
 movement_step = 0
 move = 0
@@ -42,14 +41,15 @@ mission_deck = nil
 current_mission = nil
 
 function start_game()
-  deck = deck:new()
-  deck:init()
-  deck:shuffle()
+  reset()
+  gamedeck = deck:new()
+  gamedeck:init()
+  gamedeck:shuffle()
   hand = {}
 
   -- hand init
   for i = 1, NORMAL do
-    add(hand, deck:pop())
+    add(hand, gamedeck:pop())
   end
 
   -- board init
@@ -74,14 +74,10 @@ function update_game()
     play_ability()
   end
 
-  counter += 1
-  if counter > 2000 then
-    counter = 0
-  end
 end
 
 function draw_screen()
-    rectfill(0, 0, 127, 127, PEACH)
+    draw_background()
 
     -- Game Info
     print(info, 1, 1, BLACK)
@@ -97,8 +93,9 @@ function draw_screen()
     end
 
 
-
-    deck:draw()
+    if INGAME do
+      gamedeck:draw()
+    end
     board:draw()
     
     -- Draw current mission
@@ -203,3 +200,48 @@ end
   
   -- return false
 -- end
+
+function reset() 
+  card_phase = true
+board_phase = false
+ability_selected = false
+
+-- card highlight
+c_h = 1
+
+-- board row/col highlight and selection
+b_row_h = 1
+b_col_h = 1
+b_row_s = 0
+b_col_s = 0
+
+-- ability row/col highlight and selection
+a_row_h = 0
+a_col_h = 0
+a_row_s = 0
+a_col_s = 0
+
+-- source row/col
+s_row = 0
+s_col = 0
+
+
+module = EMPTY
+
+frame = 0
+counter = 0
+
+movement_step = 0
+move = 0
+info = "pLAY cARD"
+
+-- Double-selection variables for finishing movement early
+last_select_row = 0
+last_select_col = 0
+last_select_time = 0
+double_click_threshold = 0.5  -- Time window in seconds for double-selection
+
+-- Mission system variables
+mission_deck = nil
+current_mission = nil
+end

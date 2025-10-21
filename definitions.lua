@@ -46,3 +46,7 @@ IMPOSSIBLE = 3
 
 
 INGAME = false
+GAMEOVER = false
+MAINMENU = true
+
+counter = 0
