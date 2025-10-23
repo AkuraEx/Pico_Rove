@@ -123,11 +123,11 @@ end
 
 -- Draw card if less than five
 function sensor(click)
-    if (btnp(5) or click) and deck.cardAmount > 0 and #hand < 5 then
+    if (btnp(5) or click) and #gamedeck.cards > 0 and #hand < 5 then
 
         board.boardState[s_row][s_col].used = 0
 
-        add(hand, deck:pop())
+        add(hand, gamedeck:pop())
         
         b_row_h = a_row_h
         b_col_h = a_col_h
@@ -197,11 +197,11 @@ function ability_result(r1, c1, r2, c2)
                 if board:match(i, j) then
                     move = 0
                     if #hand > 0 do
-                        add(hand, deck:pop())
+                        add(hand, gamedeck:pop())
                     end
                     card_phase = true
                     ability_selected = false
-                    add(deck.completed, current_mission)
+                    add(gamedeck.completed, current_mission)
                     current_mission = mission_deck:pop_mission()
                     info = "pLay cArd"
                     module = EMPTY

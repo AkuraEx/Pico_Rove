@@ -106,8 +106,8 @@ function play_board()
             for j = 0, 3 do
                 if board:match(i, j) then
                     move = 0
-                    if gamedeck.cardAmount > 0 do
-                        add(hand, deck:pop())
+                    if #gamedeck.cards > 0 do
+                        add(hand, gamedeck:pop())
                     end
                     card_phase = true
                     board_phase = false
@@ -118,16 +118,19 @@ function play_board()
             end
         end
 
-    if move == 0 and #hand == 0 then
-        INGAME = false
-        GAMEOVER = true
-    elseif move == 0 then
-        card_phase = true
-        board_phase = false
-        module = EMPTY
-        info = "pLAY cARD"
-        c_h = 1
-    end
+        if #gamedeck.completed == 7 then
+            INGAME = false
+            WIN = true
+        elseif move == 0 and #hand == 0 then
+            INGAME = false
+            GAMEOVER = true
+        elseif move == 0 then
+            card_phase = true
+            board_phase = false
+            module = EMPTY
+            info = "pLAY cARD"
+            c_h = 1
+        end
 
     -- If Ability Selected
     elseif (btnp(5) or click) and board.boardState[b_row_h][b_col_h].type ~= EMPTY and board.boardState[b_row_h][b_col_h].used ~= 0 then

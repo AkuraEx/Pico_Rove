@@ -37,7 +37,6 @@ last_select_time = 0
 double_click_threshold = 0.5  -- Time window in seconds for double-selection
 
 -- Mission system variables
-mission_deck = nil
 current_mission = nil
 
 function start_game()
@@ -242,6 +241,5 @@ last_select_time = 0
 double_click_threshold = 0.5  -- Time window in seconds for double-selection
 
 -- Mission system variables
-mission_deck = nil
 current_mission = nil
 end

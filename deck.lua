@@ -1,7 +1,5 @@
 -- Deck Class
 deck={
-    cardAmount = 12,
-    missionCardAmount = 8,
     y = 100,
     x = 106,
     cards = {},
@@ -23,10 +21,10 @@ deck={
 
     -- draw cards left to screen
     draw = function(self)
-        if self.cardAmount ~= 0 then
+        if #self.cards ~= 0 then
             spr(self.spr, self.x, self.y, self.spr_x, self.spr_y)
         end
-        print(self.cardAmount, self.x, self.y, WHITE)
+        print(#self.cards, self.x, self.y, WHITE)
 
         for i = 1, 7 do
             rect(116, (12 * i) + 2, 125, (12 * i) + 11, BLACK)
@@ -50,23 +48,21 @@ deck={
 
     -- pop function
     pop = function(self)
-        card = self.cards[self.cardAmount]
-        deli(self.cards, self.cardAmount)
-        self.cardAmount -= 1
+        card = self.cards[#self.cards]
+        deli(self.cards, #self.cards)
         return card
     end,
 
     -- pop mission
     pop_mission = function(self)
-        mission = self.missionCards[self.missionCardAmount]
-        deli(self.missionCards, self.missionCardAmount)
-        self.missionCardAmount -= 1
+        mission = self.missionCards[#self.missionCards]
+        deli(self.missionCards, #self.missionCards)
         return mission
     end,
 
     -- shuffle function
     shuffle = function(self)
-        for i = self.cardAmount, 2, -1 do
+        for i = #self.cards, 2, -1 do
             j = flr(rnd(i)) + 1
             self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
         end
@@ -74,7 +70,7 @@ deck={
 
     -- shuffle missions function
     shuffle_missions = function(self)
-        for i = self.missionCardAmount, 2, -1 do
+        for i = #self.missionCards, 2, -1 do
             j = flr(rnd(i)) + 1
             self.missionCards[i], self.missionCards[j] = self.missionCards[j], self.missionCards[i]
         end
@@ -83,6 +79,14 @@ deck={
 
     -- All 12 Movement Cards Hardcoded
     init = function(self)
+        -- resetting
+        for i = 1, #self.cards do
+            deli(self.cards, #self.cards)
+        end
+        for i = 1, #self.completed do
+            deli(self.completed, #self.completed)
+        end
+
         -- Card 1
         add(self.cards, card:new({
         value = 3,
@@ -217,6 +221,9 @@ deck={
 
     -- Initialize Mission Cards
     init_missions = function(self)
+        for i = 1, #self.missionCards do
+            deli(self.missionCards, #self.missionCards)
+        end
 
         -- Boost Mission : 1
         add(self.missionCards, missioncard:new({

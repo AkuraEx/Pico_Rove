@@ -48,5 +48,6 @@ IMPOSSIBLE = 3
 INGAME = false
 GAMEOVER = false
 MAINMENU = true
+WIN = false
 
 counter = 0

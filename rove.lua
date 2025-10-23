@@ -19,6 +19,8 @@ function _update()
     update_game()    
     elseif GAMEOVER do
     update_gameover()
+    elseif WIN do
+    update_win()
     end
 
     counter += 1
@@ -38,6 +40,9 @@ function _draw()
     elseif GAMEOVER do
     draw_screen()
     draw_gameover()
+    elseif WIN do
+    draw_screen()
+    draw_win()
     end
 
     draw_mouse()
